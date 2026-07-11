@@ -1,0 +1,966 @@
+cat > /mnt/user-data/outputs/specversus-v3.html << 'HTMLEOF'
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpecVersus</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #080c18;
+    --bg-card: #0d1526;
+    --bg-card-hover: #111e38;
+    --border: rgba(99,130,255,0.15);
+    --border-hover: rgba(99,180,255,0.4);
+    --accent-blue: #4f8eff;
+    --accent-cyan: #00e5ff;
+    --accent-purple: #a855f7;
+    --text-main: #f0f4ff;
+    --text-muted: #7a8fb5;
+    --text-dim: #4a5a80;
+    --navbar-h: 62px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-deep);
+    color: var(--text-main);
+    min-height: 100vh;
+    padding-top: var(--navbar-h);
+  }
+  .display-font { font-family: 'Space Grotesk', sans-serif; }
+
+  .grad-text {
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .grad-text-purple {
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+
+  /* ── NAVBAR ── */
+  #navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    height: var(--navbar-h);
+    background: rgba(8,12,24,0.92);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(14px);
+    display: flex; align-items: center;
+    padding: 0 24px;
+    gap: 0;
+  }
+  .nav-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px; font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .nav-links {
+    display: flex; align-items: center; gap: 4px;
+    margin-left: auto;
+  }
+  .nav-link {
+    padding: 6px 14px; border-radius: 6px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    color: var(--text-muted); border: none; background: transparent;
+    transition: all 0.18s ease; white-space: nowrap; letter-spacing: 0.02em;
+  }
+  .nav-link:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
+  .nav-link.active { color: var(--accent-cyan); background: rgba(79,142,255,0.1); }
+  /* Hamburger */
+  #nav-toggle { display: none; }
+  #hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    cursor: pointer; padding: 8px; margin-left: auto;
+    background: none; border: none;
+  }
+  #hamburger span { display: block; width: 22px; height: 2px; background: var(--text-muted); border-radius: 2px; transition: all 0.2s; }
+  #mobile-menu {
+    display: none; position: fixed; top: var(--navbar-h); left: 0; right: 0;
+    background: rgba(8,12,24,0.98); border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(14px); z-index: 199; padding: 12px 16px;
+    flex-direction: column; gap: 4px;
+  }
+  #mobile-menu.open { display: flex; }
+  .mob-link {
+    padding: 10px 16px; border-radius: 6px; font-size: 14px; font-weight: 600;
+    cursor: pointer; color: var(--text-muted); border: none; background: transparent;
+    transition: all 0.18s; text-align: left;
+  }
+  .mob-link:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
+  .mob-link.active { color: var(--accent-cyan); background: rgba(79,142,255,0.1); }
+  @media (max-width: 700px) {
+    .nav-links { display: none; }
+    #hamburger { display: flex; }
+  }
+
+  /* ── SECTIONS ── */
+  .sv-section { display: none; }
+  .sv-section.active { display: block; }
+  .page-wrap { max-width: 1100px; margin: 0 auto; padding: 40px 16px 80px; }
+
+  /* ── SCAN LINE ── */
+  .scan-line {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent); opacity: 0.4;
+  }
+
+  /* ── PRODUCT IMAGE ── */
+  .prod-img {
+    width: 100%; aspect-ratio: 16/9; object-fit: cover;
+    border-radius: 8px; margin-bottom: 16px;
+    background: #0d1a2e;
+    display: block;
+  }
+
+  /* ── FEATURED CARDS ── */
+  .feat-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+    transition: all 0.22s ease; position: relative;
+  }
+  .feat-card::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+    opacity: 0; transition: opacity 0.22s;
+  }
+  .feat-card:hover { border-color: var(--border-hover); background: var(--bg-card-hover); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+  .feat-card:hover::after { opacity: 1; }
+  .feat-card-body { padding: 14px 16px 16px; }
+  .feat-badge { font-size: 9px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 8px; border-radius: 10px; }
+  .feat-mouse { background: rgba(0,229,255,0.1); color: var(--accent-cyan); border: 1px solid rgba(0,229,255,0.2); }
+  .feat-key   { background: rgba(168,85,247,0.1); color: #c084fc; border: 1px solid rgba(168,85,247,0.2); }
+
+  /* ── NAV CARDS (home CTA) ── */
+  .nav-card {
+    position: relative; border-radius: 14px; padding: 32px 28px;
+    cursor: pointer; border: 1px solid var(--border);
+    transition: all 0.28s ease; overflow: hidden; text-align: left;
+  }
+  .nav-card::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.28s; }
+  .nav-card.mice-card { background: linear-gradient(145deg, #0b1528, #0d1e3a); }
+  .nav-card.mice-card::before { background: radial-gradient(circle at 30% 50%, rgba(0,229,255,0.08), transparent 70%); }
+  .nav-card.keys-card { background: linear-gradient(145deg, #120b28, #1a0d38); }
+  .nav-card.keys-card::before { background: radial-gradient(circle at 70% 50%, rgba(168,85,247,0.1), transparent 70%); }
+  .nav-card:hover { transform: translateY(-3px); border-color: var(--border-hover); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+  .nav-card:hover::before { opacity: 1; }
+  .nav-card .card-icon { font-size: 36px; margin-bottom: 14px; display: block; }
+  .nav-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .nav-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .nav-card .arrow { position: absolute; right: 24px; bottom: 28px; font-size: 20px; opacity: 0.3; transition: all 0.25s; }
+  .nav-card:hover .arrow { opacity: 1; transform: translateX(4px); }
+
+  /* ── BADGES ── */
+  .badge-low     { background: rgba(16,185,129,0.12); color: #34d399; border: 1px solid rgba(52,211,153,0.25); }
+  .badge-mid     { background: rgba(79,142,255,0.12); color: #7eb8ff; border: 1px solid rgba(79,142,255,0.25); }
+  .badge-high    { background: rgba(168,85,247,0.12); color: #c084fc; border: 1px solid rgba(168,85,247,0.25); }
+  .badge-hall    { background: rgba(0,229,255,0.1); color: #67e8f9; border: 1px solid rgba(0,229,255,0.2); }
+  .badge-mec     { background: rgba(234,179,8,0.1); color: #fbbf24; border: 1px solid rgba(234,179,8,0.2); }
+  .badge-special { background: rgba(236,72,153,0.1); color: #f472b6; border: 1px solid rgba(236,72,153,0.2); }
+
+  /* ── FILTER BUTTONS ── */
+  .filter-btn {
+    padding: 8px 18px; border-radius: 6px; font-size: 12px; font-weight: 600;
+    cursor: pointer; border: 1px solid var(--border); background: transparent;
+    color: var(--text-muted); transition: all 0.2s; letter-spacing: 0.03em; white-space: nowrap;
+  }
+  .filter-btn:hover { color: var(--text-main); border-color: rgba(99,180,255,0.3); }
+  .filter-btn.active {
+    background: linear-gradient(135deg, rgba(79,142,255,0.2), rgba(0,229,255,0.1));
+    border-color: var(--accent-blue); color: var(--accent-cyan); box-shadow: 0 0 16px rgba(79,142,255,0.2);
+  }
+
+  /* ── ADV PANEL ── */
+  .adv-panel {
+    display: none; background: rgba(13,21,38,0.98);
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 20px 24px; margin-top: 12px; backdrop-filter: blur(12px);
+  }
+  .adv-panel.open { display: block; }
+  .adv-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 10px; }
+  .adv-chip {
+    padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 500;
+    cursor: pointer; border: 1px solid var(--border); background: transparent;
+    color: var(--text-muted); transition: all 0.18s; white-space: nowrap;
+  }
+  .adv-chip:hover { color: var(--text-main); border-color: rgba(99,180,255,0.3); }
+  .adv-chip.sel { background: rgba(79,142,255,0.15); border-color: var(--accent-blue); color: #a5c8ff; }
+
+  /* ── PRODUCT CARD ── */
+  .prod-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+    transition: all 0.25s; position: relative;
+  }
+  .prod-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at top right, rgba(79,142,255,0.04) 0%, transparent 60%);
+    pointer-events: none; z-index: 0;
+  }
+  .prod-card > * { position: relative; z-index: 1; }
+  .prod-card:hover {
+    border-color: var(--border-hover); background: var(--bg-card-hover);
+    transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+  .card-glow-line {
+    position: absolute; top: 0; left: 0; right: 0; height: 1px; z-index: 2;
+    background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+    opacity: 0; transition: opacity 0.25s;
+  }
+  .prod-card:hover .card-glow-line { opacity: 1; }
+  .prod-card.hidden { display: none; }
+  .prod-card-body { padding: 0 18px 18px; }
+
+  /* ── SPEC ROW ── */
+  .spec-row {
+    display: flex; align-items: baseline; gap: 8px;
+    padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 13px;
+  }
+  .spec-row:last-child { border-bottom: none; }
+  .spec-key { color: var(--text-dim); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; min-width: 90px; flex-shrink: 0; }
+  .spec-val { color: #c8d8f8; font-weight: 400; line-height: 1.4; }
+
+  /* ── WHY BUY ── */
+  .why-buy {
+    background: linear-gradient(135deg, rgba(79,142,255,0.08), rgba(0,229,255,0.04));
+    border: 1px solid rgba(79,142,255,0.15); border-radius: 8px;
+    padding: 10px 14px; margin-top: 14px; font-size: 12.5px; color: #9ab8f0; line-height: 1.5;
+  }
+  .why-buy-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 4px; }
+
+  /* ── BUY LINK ── */
+  .buy-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 14px; padding: 8px 18px; border-radius: 6px;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    text-decoration: none;
+    background: linear-gradient(135deg, rgba(79,142,255,0.2), rgba(0,229,255,0.1));
+    border: 1px solid rgba(79,142,255,0.4); color: var(--accent-cyan); transition: all 0.2s;
+  }
+  .buy-link:hover { background: linear-gradient(135deg, rgba(79,142,255,0.35), rgba(0,229,255,0.2)); border-color: var(--accent-cyan); box-shadow: 0 0 20px rgba(0,229,255,0.15); }
+  .buy-link-high { background: linear-gradient(135deg, rgba(168,85,247,0.2), rgba(79,142,255,0.1)); border-color: rgba(168,85,247,0.4); color: #c084fc; }
+  .buy-link-high:hover { background: linear-gradient(135deg, rgba(168,85,247,0.35), rgba(79,142,255,0.2)); border-color: #a855f7; box-shadow: 0 0 20px rgba(168,85,247,0.2); }
+  .buy-link-key { background: linear-gradient(135deg, rgba(168,85,247,0.15), rgba(79,142,255,0.1)); border-color: rgba(168,85,247,0.35); color: #c084fc; }
+  .buy-link-key:hover { background: linear-gradient(135deg, rgba(168,85,247,0.3), rgba(79,142,255,0.15)); border-color: #a855f7; box-shadow: 0 0 20px rgba(168,85,247,0.15); }
+
+  /* ── MISC ── */
+  .weight-bar { height: 3px; border-radius: 2px; background: rgba(255,255,255,0.06); margin-top: 4px; overflow: hidden; }
+  .weight-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue)); }
+  .more-btn {
+    padding: 8px 18px; border-radius: 6px; font-size: 13px; font-weight: 600;
+    cursor: pointer; border: 1px solid rgba(168,85,247,0.3); background: rgba(168,85,247,0.08);
+    color: #c084fc; transition: all 0.2s; display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
+  }
+  .more-btn:hover { border-color: rgba(168,85,247,0.6); background: rgba(168,85,247,0.15); }
+  .more-btn.open { border-color: #a855f7; background: rgba(168,85,247,0.2); }
+  .chevron { transition: transform 0.2s; }
+  .more-btn.open .chevron { transform: rotate(180deg); }
+  .count-badge { background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan)); color: #000; font-size: 11px; font-weight: 800; padding: 1px 7px; border-radius: 10px; }
+  .stat-chip { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 6px; padding: 8px 16px; font-size: 12px; color: var(--text-muted); }
+  .stat-chip strong { color: var(--text-main); font-size: 18px; font-weight: 700; display: block; }
+
+  /* ── ABOUT ── */
+  .about-value-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 24px; transition: all 0.2s;
+  }
+  .about-value-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+
+  /* ── CONTACT FORM ── */
+  .form-field {
+    width: 100%; padding: 12px 16px; border-radius: 8px;
+    background: rgba(13,21,38,0.8); border: 1px solid var(--border);
+    color: var(--text-main); font-size: 14px; font-family: 'Inter', sans-serif;
+    transition: all 0.2s; outline: none;
+  }
+  .form-field:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px rgba(79,142,255,0.12); }
+  .form-field::placeholder { color: var(--text-dim); }
+  .form-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 7px; display: block; }
+  .submit-btn {
+    padding: 13px 32px; border-radius: 8px; font-size: 14px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+    border: none; color: #040810; transition: all 0.2s;
+  }
+  .submit-btn:hover { opacity: 0.88; box-shadow: 0 0 28px rgba(0,229,255,0.25); }
+
+  /* ── FOOTER ── */
+  #footer {
+    border-top: 1px solid var(--border);
+    background: rgba(6,9,20,0.8);
+    padding: 48px 24px 28px;
+  }
+  .footer-inner { max-width: 1100px; margin: 0 auto; }
+  .footer-link { color: var(--text-dim); font-size: 13px; text-decoration: none; transition: color 0.18s; cursor: pointer; display: block; margin-bottom: 8px; }
+  .footer-link:hover { color: var(--accent-cyan); }
+  .social-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; border-radius: 8px;
+    border: 1px solid var(--border); color: var(--text-dim);
+    text-decoration: none; font-size: 15px; transition: all 0.18s;
+  }
+  .social-btn:hover { border-color: var(--accent-blue); color: var(--accent-cyan); background: rgba(79,142,255,0.08); }
+
+  #empty-mice, #empty-keys { display: none; text-align: center; padding: 60px 20px; color: var(--text-dim); }
+
+  @media (max-width: 640px) {
+    .spec-key { min-width: 80px; font-size: 10px; }
+    .spec-row { font-size: 12px; }
+    #navbar { padding: 0 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════ NAVBAR ══════════════════════════ -->
+<nav id="navbar">
+  <span class="nav-logo grad-text" onclick="showSection('home')">Spec<span style="-webkit-text-fill-color:var(--text-main);">Versus</span></span>
+  <div class="nav-links">
+    <button class="nav-link active" data-section="home"   onclick="showSection('home')">Inicio</button>
+    <button class="nav-link"        data-section="mice"   onclick="showSection('mice')">Ratones</button>
+    <button class="nav-link"        data-section="keys"   onclick="showSection('keys')">Teclados</button>
+    <button class="nav-link"        data-section="about"  onclick="showSection('about')">Sobre Nosotros</button>
+    <button class="nav-link"        data-section="contact" onclick="showSection('contact')">Contacto</button>
+  </div>
+  <button id="hamburger" onclick="toggleMobile()" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div id="mobile-menu">
+  <button class="mob-link active" data-section="home"    onclick="showSection('home');closeMobile()">Inicio</button>
+  <button class="mob-link"        data-section="mice"    onclick="showSection('mice');closeMobile()">Ratones</button>
+  <button class="mob-link"        data-section="keys"    onclick="showSection('keys');closeMobile()">Teclados</button>
+  <button class="mob-link"        data-section="about"   onclick="showSection('about');closeMobile()">Sobre Nosotros</button>
+  <button class="mob-link"        data-section="contact" onclick="showSection('contact');closeMobile()">Contacto</button>
+</div>
+
+<!-- ══════════════════════════ HOME ══════════════════════════ -->
+<div id="section-home" class="sv-section active">
+<div class="page-wrap">
+
+  <div style="text-align:center; padding:48px 0 44px; position:relative;">
+    <div style="font-size:10px; letter-spacing:0.25em; font-weight:700; color:var(--accent-cyan); text-transform:uppercase; margin-bottom:16px; opacity:0.7;">Tu guía sin hype · 2025</div>
+    <h1 class="display-font" style="font-size:clamp(42px,8vw,84px); font-weight:700; line-height:1; margin-bottom:18px;">
+      <span class="grad-text">Spec</span><span style="color:var(--text-main);">Versus</span>
+    </h1>
+    <p style="color:var(--text-muted); font-size:15px; max-width:500px; margin:0 auto; line-height:1.8;">
+      Comparativas reales de periféricos gaming. Sin relleno, sin hype. Solo los datos que necesitas.
+    </p>
+    <div class="scan-line"></div>
+  </div>
+
+  <!-- Featured -->
+  <div style="margin-bottom:44px;">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px;">
+      <span style="font-size:10px; font-weight:800; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-dim);">★ Selección del Editor</span>
+      <div style="flex:1; height:1px; background:var(--border);"></div>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px;">
+
+      <!-- Featured: VXE Dragonfly R1 -->
+      <div class="feat-card">
+        <!-- SUBE TU IMAGEN AQUÍ -->
+        <img src="https://placehold.co/400x220/0d1a2e/4f8eff?text=VXE+Dragonfly+R1" alt="VXE Dragonfly R1" class="prod-img" style="border-radius:0; margin-bottom:0;">
+        <div class="feat-card-body">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span class="feat-badge feat-mouse">🖱️ Ratón</span>
+            <span style="font-size:10px; color:var(--text-dim);">Low Budget</span>
+          </div>
+          <div class="display-font" style="font-size:15px; font-weight:700; margin-bottom:5px;">VXE Dragonfly R1</div>
+          <div style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:8px;">El rey indiscutible de la calidad-precio del mercado actual.</div>
+          <div style="font-size:11px; color:var(--text-dim);">51g · PAW3395 · Inalámbrico 2.4GHz</div>
+        </div>
+      </div>
+
+      <!-- Featured: WLMouse Beast X Pro -->
+      <div class="feat-card" style="border-color:rgba(168,85,247,0.2);">
+        <!-- SUBE TU IMAGEN AQUÍ -->
+        <img src="https://placehold.co/400x220/120b28/a855f7?text=WLMouse+Beast+X+Pro" alt="WLMouse Beast X Pro" class="prod-img" style="border-radius:0; margin-bottom:0;">
+        <div class="feat-card-body">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span class="feat-badge feat-mouse">🖱️ Ratón</span>
+            <span style="font-size:10px; color:#c084fc;">High End</span>
+          </div>
+          <div class="display-font" style="font-size:15px; font-weight:700; margin-bottom:5px; color:#e2b4ff;">WLMouse Beast X Pro</div>
+          <div style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:8px;">Magnesio aeronáutico: estética espectacular y ligereza premium.</div>
+          <div style="font-size:11px; color:var(--text-dim);">39g · PAW3395 · Inalámbrico 8K</div>
+        </div>
+      </div>
+
+      <!-- Featured: IROK MG68 ACE -->
+      <div class="feat-card" style="border-color:rgba(0,229,255,0.15);">
+        <!-- SUBE TU IMAGEN AQUÍ -->
+        <img src="https://placehold.co/400x220/041a1e/00e5ff?text=IROK+MG68+ACE" alt="IROK MG68 ACE" class="prod-img" style="border-radius:0; margin-bottom:0;">
+        <div class="feat-card-body">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span class="feat-badge feat-key">⌨️ Teclado</span>
+            <span style="font-size:10px; color:#67e8f9;">Hall Effect</span>
+          </div>
+          <div class="display-font" style="font-size:15px; font-weight:700; margin-bottom:5px; color:#a5f3fc;">IROK MG68 ACE</div>
+          <div style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:8px;">Rapid Trigger al máximo rendimiento en el formato más compacto.</div>
+          <div style="font-size:11px; color:var(--text-dim);">65% · Hall Effect · 2.4GHz + BT + Cable</div>
+        </div>
+      </div>
+
+      <!-- Featured: Royal Kludge RK S85 -->
+      <div class="feat-card" style="border-color:rgba(236,72,153,0.2);">
+        <!-- SUBE TU IMAGEN AQUÍ -->
+        <img src="https://placehold.co/400x220/1a0414/ec4899?text=Royal+Kludge+RK+S85" alt="Royal Kludge RK S85" class="prod-img" style="border-radius:0; margin-bottom:0;">
+        <div class="feat-card-body">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span class="feat-badge feat-key">⌨️ Teclado</span>
+            <span style="font-size:10px; color:#f472b6;">Ed. Especial</span>
+          </div>
+          <div class="display-font" style="font-size:15px; font-weight:700; margin-bottom:5px; color:#fda4af;">Royal Kludge RK S85</div>
+          <div style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:8px;">Pantalla LCD personalizable + switches ultra-suaves. Estética única.</div>
+          <div style="font-size:11px; color:var(--text-dim);">75% · Beige / Cloud · Triple Modo</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CTA nav cards -->
+  <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px;">
+    <span style="font-size:10px; font-weight:800; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-dim);">Explorar catálogos</span>
+    <div style="flex:1; height:1px; background:var(--border);"></div>
+  </div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px;">
+    <div class="nav-card mice-card" onclick="showSection('mice')">
+      <span class="card-icon">🖱️</span>
+      <h3 class="display-font grad-text">Ver Ratones Gaming</h3>
+      <p>11 ratones comparados por peso, sensor, conectividad y agarre. Low Budget a High End.</p>
+      <span class="arrow">→</span>
+    </div>
+    <div class="nav-card keys-card" onclick="showSection('keys')">
+      <span class="card-icon">⌨️</span>
+      <h3 class="display-font grad-text-purple">Ver Teclados Mecánicos</h3>
+      <p>8 teclados: Hall Effect magnéticos, mecánicos ISO y ediciones especiales con pantalla LCD.</p>
+      <span class="arrow">→</span>
+    </div>
+  </div>
+
+</div>
+</div><!-- /home -->
+
+
+<!-- ══════════════════════════ MICE ══════════════════════════ -->
+<div id="section-mice" class="sv-section">
+<div class="page-wrap">
+
+  <div style="text-align:center; margin-bottom:36px; position:relative; padding-bottom:28px;">
+    <div style="font-size:10px; letter-spacing:0.2em; font-weight:700; color:var(--accent-cyan); text-transform:uppercase; margin-bottom:12px; opacity:0.8;">SpecVersus · Ratones Gaming 2025</div>
+    <h2 class="display-font grad-text" style="font-size:clamp(24px,4vw,44px); font-weight:700; margin-bottom:10px;">Ratones Gaming<br>sin Trampa</h2>
+    <p style="color:var(--text-muted); font-size:14px; max-width:460px; margin:0 auto; line-height:1.7;">11 ratones comparados por peso, sensor y agarre. Sin relleno.</p>
+    <div class="scan-line"></div>
+  </div>
+
+  <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:26px;">
+    <div class="stat-chip"><strong>11</strong>Ratones</div>
+    <div class="stat-chip"><strong>36–59g</strong>Rango peso</div>
+    <div class="stat-chip"><strong>2</strong>Sensores top</div>
+    <div class="stat-chip"><strong>3</strong>Gamas</div>
+  </div>
+
+  <div style="margin-bottom:8px;">
+    <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+      <button class="filter-btn active" onclick="setMiceFilter('budget','all',this)">Todos</button>
+      <button class="filter-btn" onclick="setMiceFilter('budget','low',this)"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#34d399;margin-right:5px;vertical-align:middle;"></span>Low Budget</button>
+      <button class="filter-btn" onclick="setMiceFilter('budget','mid',this)"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#7eb8ff;margin-right:5px;vertical-align:middle;"></span>Mid Range</button>
+      <button class="filter-btn" onclick="setMiceFilter('budget','high',this)"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#c084fc;margin-right:5px;vertical-align:middle;"></span>High End</button>
+      <button class="more-btn" id="mice-more-btn" onclick="toggleMiceAdv()">
+        <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        Más Filtros <span class="count-badge" id="mice-adv-count" style="display:none;"></span>
+      </button>
+    </div>
+    <div class="adv-panel" id="mice-adv-panel">
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px;">
+        <div>
+          <div class="adv-label">⚖️ Peso</div>
+          <div style="display:flex; flex-wrap:wrap; gap:6px;">
+            <button class="adv-chip" data-type="weight" data-val="lt40"  onclick="toggleMiceChip(this)">Menos de 40g</button>
+            <button class="adv-chip" data-type="weight" data-val="40-55" onclick="toggleMiceChip(this)">40g – 55g</button>
+            <button class="adv-chip" data-type="weight" data-val="gt55"  onclick="toggleMiceChip(this)">Más de 55g</button>
+          </div>
+        </div>
+        <div>
+          <div class="adv-label">✋ Grip</div>
+          <div style="display:flex; flex-wrap:wrap; gap:6px;">
+            <button class="adv-chip" data-type="grip" data-val="palm"      onclick="toggleMiceChip(this)">Palm</button>
+            <button class="adv-chip" data-type="grip" data-val="claw"      onclick="toggleMiceChip(this)">Claw</button>
+            <button class="adv-chip" data-type="grip" data-val="fingertip" onclick="toggleMiceChip(this)">Fingertip</button>
+          </div>
+        </div>
+        <div>
+          <div class="adv-label">📐 Forma</div>
+          <div style="display:flex; flex-wrap:wrap; gap:6px;">
+            <button class="adv-chip" data-type="shape" data-val="simetrico"  onclick="toggleMiceChip(this)">Simétrico</button>
+            <button class="adv-chip" data-type="shape" data-val="ergonomico" onclick="toggleMiceChip(this)">Ergonómico</button>
+          </div>
+        </div>
+      </div>
+      <button onclick="clearMiceAdv()" style="margin-top:16px;padding:5px 14px;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,0.1);background:transparent;color:var(--text-dim);" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-dim)'">Limpiar filtros avanzados</button>
+    </div>
+  </div>
+
+  <div style="margin:20px 0 16px; font-size:12px; color:var(--text-dim); display:flex; align-items:center; gap:8px;">
+    Mostrando <span id="mice-count" style="color:var(--accent-cyan); font-weight:700; font-size:14px;">11</span> ratones
+  </div>
+  <div id="mice-grid" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:16px;"></div>
+  <div id="empty-mice"><div style="font-size:36px;margin-bottom:10px;">🖱️</div><div style="font-size:15px;font-weight:600;color:var(--text-muted);margin-bottom:5px;">Sin resultados</div><div style="font-size:13px;">Prueba a cambiar los filtros.</div></div>
+
+</div>
+</div><!-- /mice -->
+
+
+<!-- ══════════════════════════ KEYS ══════════════════════════ -->
+<div id="section-keys" class="sv-section">
+<div class="page-wrap">
+
+  <div style="text-align:center; margin-bottom:36px; position:relative; padding-bottom:28px;">
+    <div style="font-size:10px; letter-spacing:0.2em; font-weight:700; color:#c084fc; text-transform:uppercase; margin-bottom:12px; opacity:0.8;">SpecVersus · Teclados 2025</div>
+    <h2 class="display-font grad-text-purple" style="font-size:clamp(24px,4vw,44px); font-weight:700; margin-bottom:10px;">Teclados Mecánicos<br>sin Trampa</h2>
+    <p style="color:var(--text-muted); font-size:14px; max-width:460px; margin:0 auto; line-height:1.7;">8 teclados: Hall Effect, mecánicos ISO y ediciones especiales.</p>
+    <div style="position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent-purple),transparent);opacity:0.4;"></div>
+  </div>
+
+  <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:26px;">
+    <div class="stat-chip"><strong>8</strong>Teclados</div>
+    <div class="stat-chip"><strong>60%–96%</strong>Formatos</div>
+    <div class="stat-chip"><strong>3</strong>Categorías</div>
+  </div>
+
+  <div style="margin-bottom:8px;">
+    <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+      <button class="filter-btn active" onclick="setKeysFilter('cat','all',this)">Todos</button>
+      <button class="filter-btn" onclick="setKeysFilter('cat','hall',this)"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#67e8f9;margin-right:5px;vertical-align:middle;"></span>Hall Effect</button>
+      <button class="filter-btn" onclick="setKeysFilter('cat','mec',this)"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#fbbf24;margin-right:5px;vertical-align:middle;"></span>Mecánicos ISO</button>
+      <button class="filter-btn" onclick="setKeysFilter('cat','special',this)"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#f472b6;margin-right:5px;vertical-align:middle;"></span>Ed. Especiales</button>
+      <button class="more-btn" id="keys-more-btn" onclick="toggleKeysAdv()">
+        <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        Más Filtros <span class="count-badge" id="keys-adv-count" style="display:none;"></span>
+      </button>
+    </div>
+    <div class="adv-panel" id="keys-adv-panel">
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px;">
+        <div>
+          <div class="adv-label">📐 Formato</div>
+          <div style="display:flex; flex-wrap:wrap; gap:6px;">
+            <button class="adv-chip" data-type="size" data-val="compact" onclick="toggleKeysChip(this)">60% / 65%</button>
+            <button class="adv-chip" data-type="size" data-val="75"      onclick="toggleKeysChip(this)">75%</button>
+            <button class="adv-chip" data-type="size" data-val="tkl"     onclick="toggleKeysChip(this)">TKL / 96%</button>
+          </div>
+        </div>
+        <div>
+          <div class="adv-label">📡 Conectividad</div>
+          <div style="display:flex; flex-wrap:wrap; gap:6px;">
+            <button class="adv-chip" data-type="conn" data-val="wireless" onclick="toggleKeysChip(this)">Inalámbrico</button>
+            <button class="adv-chip" data-type="conn" data-val="cable"    onclick="toggleKeysChip(this)">Solo Cable</button>
+            <button class="adv-chip" data-type="conn" data-val="triple"   onclick="toggleKeysChip(this)">Triple Modo</button>
+          </div>
+        </div>
+      </div>
+      <button onclick="clearKeysAdv()" style="margin-top:16px;padding:5px 14px;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,0.1);background:transparent;color:var(--text-dim);" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-dim)'">Limpiar filtros avanzados</button>
+    </div>
+  </div>
+
+  <div style="margin:20px 0 16px; font-size:12px; color:var(--text-dim); display:flex; align-items:center; gap:8px;">
+    Mostrando <span id="keys-count" style="color:#c084fc; font-weight:700; font-size:14px;">8</span> teclados
+  </div>
+  <div id="keys-grid" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:16px;"></div>
+  <div id="empty-keys"><div style="font-size:36px;margin-bottom:10px;">⌨️</div><div style="font-size:15px;font-weight:600;color:var(--text-muted);margin-bottom:5px;">Sin resultados</div><div style="font-size:13px;">Prueba a cambiar los filtros.</div></div>
+
+</div>
+</div><!-- /keys -->
+
+
+<!-- ══════════════════════════ ABOUT ══════════════════════════ -->
+<div id="section-about" class="sv-section">
+<div class="page-wrap" style="max-width:860px;">
+
+  <div style="text-align:center; margin-bottom:52px; position:relative; padding-bottom:28px;">
+    <div style="font-size:10px; letter-spacing:0.2em; font-weight:700; color:var(--accent-cyan); text-transform:uppercase; margin-bottom:14px; opacity:0.8;">Quiénes somos</div>
+    <h2 class="display-font grad-text" style="font-size:clamp(28px,5vw,50px); font-weight:700; margin-bottom:14px;">Sobre SpecVersus</h2>
+    <p style="color:var(--text-muted); font-size:15px; line-height:1.8; max-width:560px; margin:0 auto;">Una plataforma construida por y para gamers que están hartos del marketing vacío.</p>
+    <div class="scan-line"></div>
+  </div>
+
+  <!-- Mission -->
+  <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:36px; margin-bottom:28px; position:relative; overflow:hidden;">
+    <div style="position:absolute;top:0;right:0;width:280px;height:280px;background:radial-gradient(circle,rgba(79,142,255,0.06),transparent 70%);pointer-events:none;"></div>
+    <div style="font-size:11px; font-weight:700; letter-spacing:0.15em; color:var(--accent-cyan); text-transform:uppercase; margin-bottom:14px;">Nuestra misión</div>
+    <p style="font-size:16px; color:var(--text-main); line-height:1.9; margin-bottom:16px;">
+      <strong>SpecVersus</strong> nació de una pregunta simple: <em style="color:var(--accent-cyan);">¿por qué es tan difícil saber qué ratón o teclado comprar?</em>
+    </p>
+    <p style="font-size:14px; color:var(--text-muted); line-height:1.8;">
+      Analizamos al milímetro el peso, el tipo de sensor, el grip, la forma y la conectividad de cada periférico. Sin listas de esponsorizados, sin valoraciones infladas. Solo datos reales, comparativas honestas y recomendaciones que tienen sentido según tu forma de jugar y tu presupuesto.
+    </p>
+  </div>
+
+  <!-- Values grid -->
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin-bottom:40px;">
+    <div class="about-value-card">
+      <div style="font-size:28px; margin-bottom:12px;">🎯</div>
+      <div class="display-font" style="font-size:15px; font-weight:700; margin-bottom:8px; color:var(--accent-cyan);">Datos reales</div>
+      <div style="font-size:13px; color:var(--text-muted); line-height:1.6;">Cada especificación proviene de fuentes verificadas y pruebas propias. Cero relleno.</div>
+    </div>
+    <div class="about-value-card">
+      <div style="font-size:28px; margin-bottom:12px;">⚡</div>
+      <div class="display-font" style="font-size:15px; font-weight:700; margin-bottom:8px; color:#c084fc;">Sin hype</div>
+      <div style="font-size:13px; color:var(--text-muted); line-height:1.6;">No vendemos humo. Si un producto de bajo coste gana a uno caro, lo decimos sin rodeos.</div>
+    </div>
+    <div class="about-value-card">
+      <div style="font-size:28px; margin-bottom:12px;">🛠️</div>
+      <div class="display-font" style="font-size:15px; font-weight:700; margin-bottom:8px; color:#67e8f9;">Actualización constante</div>
+      <div style="font-size:13px; color:var(--text-muted); line-height:1.6;">El mercado de periféricos cambia rápido. Actualizamos el catálogo para que siempre estés al día.</div>
+    </div>
+    <div class="about-value-card">
+      <div style="font-size:28px; margin-bottom:12px;">🤝</div>
+      <div class="display-font" style="font-size:15px; font-weight:700; margin-bottom:8px; color:#fbbf24;">Para todos los budgets</div>
+      <div style="font-size:13px; color:var(--text-muted); line-height:1.6;">Desde opciones low cost que destrozan a la competencia hasta hardware de gama entusiasta.</div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div style="text-align:center; padding:36px; background:linear-gradient(135deg,rgba(79,142,255,0.07),rgba(168,85,247,0.07)); border:1px solid rgba(79,142,255,0.15); border-radius:14px;">
+    <div class="display-font" style="font-size:20px; font-weight:700; margin-bottom:10px;">¿Listo para encontrar tu periférico?</div>
+    <p style="font-size:14px; color:var(--text-muted); margin-bottom:20px;">Explora nuestras comparativas y encuentra el setup perfecto para ti.</p>
+    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+      <button onclick="showSection('mice')" style="padding:10px 24px; border-radius:7px; font-size:13px; font-weight:700; cursor:pointer; background:linear-gradient(135deg,rgba(79,142,255,0.2),rgba(0,229,255,0.1)); border:1px solid rgba(79,142,255,0.4); color:var(--accent-cyan);">🖱️ Ver Ratones</button>
+      <button onclick="showSection('keys')" style="padding:10px 24px; border-radius:7px; font-size:13px; font-weight:700; cursor:pointer; background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(79,142,255,0.1)); border:1px solid rgba(168,85,247,0.4); color:#c084fc;">⌨️ Ver Teclados</button>
+    </div>
+  </div>
+
+</div>
+</div><!-- /about -->
+
+
+<!-- ══════════════════════════ CONTACT ══════════════════════════ -->
+<div id="section-contact" class="sv-section">
+<div class="page-wrap" style="max-width:700px;">
+
+  <div style="text-align:center; margin-bottom:48px; position:relative; padding-bottom:28px;">
+    <div style="font-size:10px; letter-spacing:0.2em; font-weight:700; color:var(--accent-cyan); text-transform:uppercase; margin-bottom:14px; opacity:0.8;">Hablemos</div>
+    <h2 class="display-font grad-text" style="font-size:clamp(28px,5vw,50px); font-weight:700; margin-bottom:12px;">Contacto</h2>
+    <p style="color:var(--text-muted); font-size:14px; line-height:1.8;">¿Tienes alguna sugerencia, quieres colaborar o simplemente saludar? Escríbenos.</p>
+    <div class="scan-line"></div>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-bottom:32px;" class="contact-info-grid">
+    <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:20px;">
+      <div style="font-size:20px; margin-bottom:8px;">✉️</div>
+      <div style="font-size:11px; font-weight:700; letter-spacing:0.1em; color:var(--text-dim); text-transform:uppercase; margin-bottom:4px;">Email</div>
+      <div style="font-size:14px; color:var(--accent-cyan);">hola@specversus.com</div>
+    </div>
+    <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:20px;">
+      <div style="font-size:20px; margin-bottom:8px;">💬</div>
+      <div style="font-size:11px; font-weight:700; letter-spacing:0.1em; color:var(--text-dim); text-transform:uppercase; margin-bottom:4px;">Discord</div>
+      <div style="font-size:14px; color:#c084fc;">discord.gg/specversus</div>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:36px; position:relative; overflow:hidden;">
+    <div style="position:absolute;top:0;right:0;width:250px;height:250px;background:radial-gradient(circle,rgba(168,85,247,0.05),transparent 70%);pointer-events:none;"></div>
+
+    <div style="margin-bottom:22px;">
+      <label class="form-label">Nombre</label>
+      <input type="text" class="form-field" placeholder="Tu nombre aquí">
+    </div>
+    <div style="margin-bottom:22px;">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-field" placeholder="tu@email.com">
+    </div>
+    <div style="margin-bottom:28px;">
+      <label class="form-label">Mensaje</label>
+      <textarea class="form-field" rows="5" placeholder="Cuéntanos en qué podemos ayudarte..."></textarea>
+    </div>
+    <div style="display:flex; justify-content:flex-end;">
+      <button class="submit-btn" onclick="handleSubmit(this)">Enviar mensaje →</button>
+    </div>
+    <div id="form-success" style="display:none; margin-top:16px; padding:12px 16px; border-radius:8px; background:rgba(52,211,153,0.1); border:1px solid rgba(52,211,153,0.25); color:#34d399; font-size:13px; font-weight:600;">
+      ✓ Mensaje enviado correctamente. ¡Te responderemos pronto!
+    </div>
+  </div>
+
+</div>
+</div><!-- /contact -->
+
+<style>
+  @media (max-width:520px) {
+    .contact-info-grid { grid-template-columns: 1fr !important; }
+  }
+</style>
+
+
+<!-- ══════════════════════════ FOOTER ══════════════════════════ -->
+<footer id="footer">
+  <div class="footer-inner">
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:36px; margin-bottom:40px;">
+
+      <!-- Brand -->
+      <div>
+        <div class="display-font grad-text" style="font-size:22px; font-weight:700; margin-bottom:12px; cursor:pointer;" onclick="showSection('home')">SpecVersus</div>
+        <p style="font-size:13px; color:var(--text-dim); line-height:1.7; margin-bottom:16px;">Comparativas honestas de periféricos gaming. Sin hype, solo datos.</p>
+        <div style="display:flex; gap:8px;">
+          <a href="#" class="social-btn" title="Twitter/X">𝕏</a>
+          <a href="#" class="social-btn" title="YouTube">▶</a>
+          <a href="#" class="social-btn" title="Discord">◈</a>
+          <a href="#" class="social-btn" title="Instagram">◎</a>
+        </div>
+      </div>
+
+      <!-- Links -->
+      <div>
+        <div style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-dim); margin-bottom:14px;">Catálogos</div>
+        <span class="footer-link" onclick="showSection('mice')">🖱️ Ratones Gaming</span>
+        <span class="footer-link" onclick="showSection('keys')">⌨️ Teclados Mecánicos</span>
+        <span class="footer-link" onclick="showSection('home')" style="margin-top:8px;">★ Selección del Editor</span>
+      </div>
+
+      <div>
+        <div style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-dim); margin-bottom:14px;">SpecVersus</div>
+        <span class="footer-link" onclick="showSection('about')">Sobre Nosotros</span>
+        <span class="footer-link" onclick="showSection('contact')">Contacto</span>
+        <a href="#" class="footer-link">Política de afiliados</a>
+        <a href="#" class="footer-link">Aviso legal</a>
+      </div>
+
+      <!-- Newsletter teaser -->
+      <div>
+        <div style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-dim); margin-bottom:14px;">Newsletter</div>
+        <p style="font-size:13px; color:var(--text-dim); line-height:1.6; margin-bottom:14px;">Las mejores ofertas y análisis, directos a tu inbox.</p>
+        <div style="display:flex; gap:8px;">
+          <input type="email" placeholder="tu@email.com" style="flex:1; padding:8px 12px; border-radius:6px; background:rgba(13,21,38,0.8); border:1px solid var(--border); color:var(--text-main); font-size:12px; outline:none; min-width:0;">
+          <button style="padding:8px 14px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; background:linear-gradient(135deg,var(--accent-blue),var(--accent-cyan)); border:none; color:#040810; white-space:nowrap;">→</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="border-top:1px solid var(--border); padding-top:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+      <div style="font-size:12px; color:var(--text-dim);">© 2025 SpecVersus. Hecho con ❤️ para la comunidad gamer.</div>
+      <div style="font-size:11px; color:var(--text-dim);">Algunos enlaces son de afiliado. <a href="#" style="color:var(--text-dim); text-decoration:underline; text-underline-offset:3px;">Saber más.</a></div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ══════════════════════════ JAVASCRIPT ══════════════════════════ -->
+<script>
+// ─── DATA ────────────────────────────────────────────────────────
+const MICE = [
+  { id:'m1',  name:'VXE Dragonfly R1',    budget:'low',  weight:51, shape:'simetrico',  grip:['claw','fingertip'], sensor:'PixArt PAW3395',      connectivity:'Inalámbrico 2.4GHz + Cable',         shapeLabel:'Simétrico, mediano',              gripLabel:'Claw / Fingertip',          why:'El rey indiscutible de la calidad-precio del mercado actual.',            img:'https://placehold.co/600x340/0d1a2e/4f8eff?text=VXE+Dragonfly+R1',    link:'#' },
+  { id:'m2',  name:'Aula V9 Ultra',       budget:'low',  weight:54, shape:'ergonomico', grip:['claw'],             sensor:'PixArt PAW3395',      connectivity:'Inalámbrico + BT + Cable',            shapeLabel:'Ergonómico, mano pequeña',        gripLabel:'Aggressive Claw',           why:'Clon a escala del Superlight 2C, perfecto para manos compactas.',         img:'https://placehold.co/600x340/0d1a2e/34d399?text=Aula+V9+Ultra',       link:'#' },
+  { id:'m3',  name:'Darmoshark M5 Air',   budget:'low',  weight:36, shape:'simetrico',  grip:['fingertip'],        sensor:'PixArt PAW3395',      connectivity:'Inalámbrico + Cable',                shapeLabel:'Minimalista, muy pequeño',        gripLabel:'Fingertip estricto',        why:'Movimiento libre absoluto gracias a su peso pluma de 36g.',               img:'https://placehold.co/600x340/0d1a2e/00e5ff?text=Darmoshark+M5+Air',   link:'#' },
+  { id:'m4',  name:'Scyrox V8',           budget:'mid',  weight:36, shape:'simetrico',  grip:['claw'],             sensor:'PixArt PAW3950',      connectivity:'Inalámbrico 8K + Cable',             shapeLabel:'Simétrico, joroba trasera',       gripLabel:'Aggressive Claw',           why:'36g con sensor entusiasta PAW3950 y polling 8K a precio medio.',         img:'https://placehold.co/600x340/0d1a2e/7eb8ff?text=Scyrox+V8',           link:'#' },
+  { id:'m5',  name:'ATK F1 V2',           budget:'mid',  weight:38, shape:'simetrico',  grip:['claw','fingertip'], sensor:'PixArt PAW3950 Ultra', connectivity:'Inalámbrico 8K + Cable',            shapeLabel:'Simétrico, perfil plano',         gripLabel:'Aggressive Claw / Fingertip', why:'Diseñado para FPS competitivos: ligereza y respuesta instantánea.',      img:'https://placehold.co/600x340/0d1a2e/7eb8ff?text=ATK+F1+V2',           link:'#' },
+  { id:'m6',  name:'Mchose A7 Ultra V2',  budget:'mid',  weight:59, shape:'simetrico',  grip:['palm','claw'],      sensor:'PixArt PAW3950',      connectivity:'Triple Modo (2.4G + BT + Cable)',     shapeLabel:'Simétrico, mediano-grande',       gripLabel:'Palm / Relaxed Claw',       why:'Copia idéntica del Superlight con mejor sensor a mitad de precio.',       img:'https://placehold.co/600x340/0d1a2e/7eb8ff?text=Mchose+A7+Ultra+V2',  link:'#' },
+  { id:'m7',  name:'Mchose K7 Ultra',     budget:'mid',  weight:55, shape:'simetrico',  grip:['fingertip','claw'], sensor:'PixArt PAW3950',      connectivity:'Inalámbrico + Cable',                shapeLabel:'Simétrico, perfil bajo (Viper V3 Pro)', gripLabel:'Fingertip / Relaxed Claw', why:'Clona la forma del Viper V3 Pro con ergonomía de primera.',           img:'https://placehold.co/600x340/0d1a2e/7eb8ff?text=Mchose+K7+Ultra',     link:'#' },
+  { id:'m8',  name:'Incott 029 Pro',      budget:'mid',  weight:58, shape:'simetrico',  grip:['claw','palm'],      sensor:'PixArt PAW3395',      connectivity:'Triple Modo',                        shapeLabel:'Simétrico modular',               gripLabel:'Relaxed Claw / Palm',       why:'Versatilidad, batería épica y clicks hiper-definidos para todo uso.',     img:'https://placehold.co/600x340/0d1a2e/7eb8ff?text=Incott+029+Pro',      link:'#' },
+  { id:'m9',  name:'ATK Z1 Pro Max',      budget:'mid',  weight:50, shape:'ergonomico', grip:['palm'],             sensor:'PixArt PAW3950',      connectivity:'Inalámbrico 8K',                     shapeLabel:'Ergonómico mano derecha',         gripLabel:'Palm Grip',                 why:'Máxima ergonomía con el ecosistema óptico más robusto del mercado.',      img:'https://placehold.co/600x340/0d1a2e/7eb8ff?text=ATK+Z1+Pro+Max',      link:'#' },
+  { id:'m10', name:'WLMouse Beast X Pro', budget:'high', weight:39, shape:'simetrico',  grip:['fingertip','claw'], sensor:'PixArt PAW3395',      connectivity:'Inalámbrico 8K + Cable',             shapeLabel:'Simétrico, diseño con agujeros',  gripLabel:'Fingertip / Relaxed Claw',  why:'Magnesio aeronáutico: estética espectacular y ligereza premium.',         img:'https://placehold.co/600x340/120b28/a855f7?text=WLMouse+Beast+X+Pro', link:'#' },
+  { id:'m11', name:'WLMouse Sword',       budget:'high', weight:39, shape:'ergonomico', grip:['palm','claw'],      sensor:'PixArt PAW3950',      connectivity:'Inalámbrico 8K + Cable',             shapeLabel:'Ergonómico mano derecha',         gripLabel:'Palm / Ergo Claw',          why:'Ergonomía y magnesio juntos: descansa la mano sin sacrificar rendimiento.', img:'https://placehold.co/600x340/120b28/c084fc?text=WLMouse+Sword',      link:'#' }
+];
+
+const KEYS = [
+  { id:'k1', name:'IROK MG68 ACE / PLUS',          cat:'hall',    size:'compact', conn:'wireless', format:'65% Ultra compacto',                        switches:'Magnéticos Hall Effect regulables',           connectivity:'2.4GHz + BT + Cable',                 why:'Rapid Trigger al máximo rendimiento competitivo en el formato más pequeño.',        img:'https://placehold.co/600x340/041a1e/00e5ff?text=IROK+MG68+ACE',          link:'#' },
+  { id:'k2', name:'IROK Mars75 Pro / MG75',         cat:'hall',    size:'75',      conn:'wireless', format:'75% (Fila F + flechas aisladas)',            switches:'Magnéticos Hall Effect de alta precisión',    connectivity:'Inalámbrico baja latencia + Cable',    why:'El equilibrio perfecto entre tamaño gaming y teclas de función esenciales.',       img:'https://placehold.co/600x340/041a1e/67e8f9?text=IROK+Mars75+Pro',        link:'#' },
+  { id:'k3', name:'Aula AG60 Pro',                  cat:'hall',    size:'compact', conn:'cable',    format:'60% Extremo (sin fila F ni flechas)',        switches:'Hall Effect Magnéticos',                      connectivity:'Cable USB-C (latencia cero)',           why:'Para FPS que necesitan inclinar el teclado y liberar espacio total al ratón.',    img:'https://placehold.co/600x340/041a1e/a5f3fc?text=Aula+AG60+Pro',          link:'#' },
+  { id:'k4', name:'Mchose Mix87',                   cat:'hall',    size:'tkl',     conn:'triple',   format:'TKL / 87% (sin teclado numérico)',           switches:'Magnéticos de última generación',             connectivity:'Triple Modo (2.4GHz + BT + Cable)',    why:'Estética limpia y rendimiento magnético en el formato más cómodo para escribir.',  img:'https://placehold.co/600x340/041a1e/67e8f9?text=Mchose+Mix87',           link:'#' },
+  { id:'k5', name:'Royal Kludge RK R65 / R75 / M87',cat:'mec',    size:'75',      conn:'triple',   format:'65% / 75% / TKL (según versión)',            switches:'Mecánicos pre-lubricados de alta calidad',    connectivity:'Triple Modo o Cable (según versión)',  why:'Distribución ISO perfecta y acústica cremosa de fábrica sin modificaciones.',     img:'https://placehold.co/600x340/1a1000/fbbf24?text=RK+R65+R75+M87',         link:'#' },
+  { id:'k6', name:'Monsgeek M1 V5',                 cat:'mec',     size:'75',      conn:'cable',    format:'75% Premium',                               switches:'Mecánicos Hot-swappable',                     connectivity:'Cable USB-C premium',                  why:'Chasis de aluminio y construcción entusiasta para la máxima durabilidad.',         img:'https://placehold.co/600x340/1a1000/d97706?text=Monsgeek+M1+V5',         link:'#' },
+  { id:'k7', name:'Royal Kludge RK S85',            cat:'special', size:'75',      conn:'triple',   format:'75% con Pantalla LCD + Rueda de volumen',   switches:'Beige (Táctil) / Cloud (Lineal silencioso)', connectivity:'2.4GHz + BT + Cable',                 why:'Pantalla LCD personalizable con GIFs o batería. Estética premium única.',          img:'https://placehold.co/600x340/1a0414/ec4899?text=Royal+Kludge+S85',        link:'#' },
+  { id:'k8', name:'Royal Kludge RK S98',            cat:'special', size:'tkl',     conn:'triple',   format:'96% compacto (incluye pad numérico)',        switches:'Chartreuse (Lineal) / Brown (Táctil)',       connectivity:'Triple Modo de alta compatibilidad',   why:'Teclado completo con numpad comprimido para no chocar con el ratón al jugar.',    img:'https://placehold.co/600x340/1a0414/f472b6?text=Royal+Kludge+S98',        link:'#' }
+];
+
+const BADGE_LABEL = { low:'Low Budget', mid:'Mid Range', high:'High End', hall:'Hall Effect', mec:'Mecánico ISO', special:'Ed. Especial' };
+
+// ─── NAVIGATION ─────────────────────────────────────────────────
+function showSection(name) {
+  document.querySelectorAll('.sv-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('section-' + name).classList.add('active');
+  document.querySelectorAll('.nav-link, .mob-link').forEach(b => {
+    b.classList.toggle('active', b.dataset.section === name);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleMobile() {
+  document.getElementById('mobile-menu').classList.toggle('open');
+}
+function closeMobile() {
+  document.getElementById('mobile-menu').classList.remove('open');
+}
+
+// ─── MICE ───────────────────────────────────────────────────────
+let miceF = { budget:'all', weight:null, grip:null, shape:null };
+
+function weightCat(w) { return w < 40 ? 'lt40' : w <= 55 ? '40-55' : 'gt55'; }
+function wBar(w) { return Math.round(((w-34)/(65-34))*100); }
+
+function buildMouseCard(m) {
+  const hi = m.budget === 'high';
+  return `<div class="prod-card" id="${m.id}">
+    <div class="card-glow-line"></div>
+    <!-- SUBE TU IMAGEN AQUÍ — reemplaza el src con la URL de tu imagen de WordPress -->
+    <img src="${m.img}" alt="${m.name}" class="prod-img" loading="lazy">
+    <div class="prod-card-body">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:13px;gap:8px;">
+        <h3 class="display-font" style="font-size:15px;font-weight:700;color:${hi?'#e2b4ff':'var(--text-main)'};line-height:1.3;">${m.name}</h3>
+        <span class="badge-${m.budget}" style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0;">${BADGE_LABEL[m.budget]}</span>
+      </div>
+      <div class="spec-row"><span class="spec-key">⚖️ Peso</span><div style="flex:1;"><span style="font-weight:700;color:${m.weight<40?'var(--accent-cyan)':'var(--text-main)'};">${m.weight}g</span><div class="weight-bar"><div class="weight-fill" style="width:${wBar(m.weight)}%;"></div></div></div></div>
+      <div class="spec-row"><span class="spec-key">📐 Forma</span><span class="spec-val">${m.shapeLabel}</span></div>
+      <div class="spec-row"><span class="spec-key">✋ Grip</span><span class="spec-val">${m.gripLabel}</span></div>
+      <div class="spec-row"><span class="spec-key">🎯 Sensor</span><span class="spec-val" style="color:${m.sensor.includes('3950')?'#c084fc':'#c8d8f8'};">${m.sensor}</span></div>
+      <div class="spec-row"><span class="spec-key">📡 Conexión</span><span class="spec-val">${m.connectivity}</span></div>
+      <div class="why-buy"><div class="why-buy-label">✦ Por qué comprarlo</div>${m.why}</div>
+      <a href="${m.link}" target="_blank" rel="noopener nofollow" class="buy-link${hi?' buy-link-high':''}">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Ver precio →
+      </a>
+    </div>
+  </div>`;
+}
+
+function renderMice() {
+  document.getElementById('mice-grid').innerHTML = MICE.map(buildMouseCard).join('');
+  applyMice();
+}
+function applyMice() {
+  let v = 0;
+  MICE.forEach(m => {
+    const el = document.getElementById(m.id); let s = true;
+    if (miceF.budget !== 'all' && m.budget !== miceF.budget) s = false;
+    if (miceF.weight && weightCat(m.weight) !== miceF.weight) s = false;
+    if (miceF.grip && !m.grip.includes(miceF.grip)) s = false;
+    if (miceF.shape && m.shape !== miceF.shape) s = false;
+    el.classList.toggle('hidden', !s); if (s) v++;
+  });
+  document.getElementById('mice-count').textContent = v;
+  document.getElementById('empty-mice').style.display = v ? 'none' : 'block';
+  document.getElementById('mice-grid').style.display = v ? 'grid' : 'none';
+  updMiceCount();
+}
+function setMiceFilter(t, v, btn) {
+  miceF[t] = v;
+  document.querySelectorAll('#section-mice .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active'); applyMice();
+}
+let miceAdvOpen = false;
+function toggleMiceAdv() {
+  miceAdvOpen = !miceAdvOpen;
+  document.getElementById('mice-adv-panel').classList.toggle('open', miceAdvOpen);
+  document.getElementById('mice-more-btn').classList.toggle('open', miceAdvOpen);
+}
+function toggleMiceChip(btn) {
+  const t = btn.dataset.type, v = btn.dataset.val, was = btn.classList.contains('sel');
+  document.querySelectorAll(`#mice-adv-panel .adv-chip[data-type="${t}"]`).forEach(c => c.classList.remove('sel'));
+  if (!was) { btn.classList.add('sel'); miceF[t] = v; } else { miceF[t] = null; }
+  applyMice();
+}
+function clearMiceAdv() {
+  document.querySelectorAll('#mice-adv-panel .adv-chip').forEach(c => c.classList.remove('sel'));
+  miceF.weight = miceF.grip = miceF.shape = null; applyMice();
+}
+function updMiceCount() {
+  const n = [miceF.weight, miceF.grip, miceF.shape].filter(Boolean).length;
+  const b = document.getElementById('mice-adv-count');
+  b.style.display = n ? 'inline' : 'none'; b.textContent = n;
+}
+
+// ─── KEYS ───────────────────────────────────────────────────────
+let keysF = { cat:'all', size:null, conn:null };
+
+function buildKeyCard(k) {
+  const sp = k.cat === 'special', hl = k.cat === 'hall';
+  const catClass = { hall:'badge-hall', mec:'badge-mec', special:'badge-special' }[k.cat];
+  return `<div class="prod-card" id="${k.id}">
+    <div class="card-glow-line" style="background:linear-gradient(90deg,transparent,var(--accent-purple),transparent);"></div>
+    <!-- SUBE TU IMAGEN AQUÍ — reemplaza el src con la URL de tu imagen de WordPress -->
+    <img src="${k.img}" alt="${k.name}" class="prod-img" loading="lazy">
+    <div class="prod-card-body">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:13px;gap:8px;">
+        <h3 class="display-font" style="font-size:15px;font-weight:700;color:${sp?'#fda4af':hl?'#a5f3fc':'var(--text-main)'};line-height:1.3;">${k.name}</h3>
+        <span class="${catClass}" style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0;">${BADGE_LABEL[k.cat]}</span>
+      </div>
+      <div class="spec-row"><span class="spec-key">📐 Formato</span><span class="spec-val">${k.format}</span></div>
+      <div class="spec-row"><span class="spec-key">⌨️ Switches</span><span class="spec-val" style="color:${hl?'#67e8f9':'#c8d8f8'};">${k.switches}</span></div>
+      <div class="spec-row"><span class="spec-key">📡 Conexión</span><span class="spec-val">${k.connectivity}</span></div>
+      <div class="why-buy" style="background:linear-gradient(135deg,rgba(168,85,247,0.08),rgba(79,142,255,0.04));border-color:rgba(168,85,247,0.18);"><div class="why-buy-label" style="color:#c084fc;">✦ Por qué comprarlo</div>${k.why}</div>
+      <a href="${k.link}" target="_blank" rel="noopener nofollow" class="buy-link buy-link-key">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Ver precio →
+      </a>
+    </div>
+  </div>`;
+}
+
+function renderKeys() {
+  document.getElementById('keys-grid').innerHTML = KEYS.map(buildKeyCard).join('');
+  applyKeys();
+}
+function applyKeys() {
+  let v = 0;
+  KEYS.forEach(k => {
+    const el = document.getElementById(k.id); let s = true;
+    if (keysF.cat !== 'all' && k.cat !== keysF.cat) s = false;
+    if (keysF.size && k.size !== keysF.size) s = false;
+    if (keysF.conn && k.conn !== keysF.conn) s = false;
+    el.classList.toggle('hidden', !s); if (s) v++;
+  });
+  document.getElementById('keys-count').textContent = v;
+  document.getElementById('empty-keys').style.display = v ? 'none' : 'block';
+  document.getElementById('keys-grid').style.display = v ? 'grid' : 'none';
+  updKeysCount();
+}
+function setKeysFilter(t, v, btn) {
+  keysF[t] = v;
+  document.querySelectorAll('#section-keys .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active'); applyKeys();
+}
+let keysAdvOpen = false;
+function toggleKeysAdv() {
+  keysAdvOpen = !keysAdvOpen;
+  document.getElementById('keys-adv-panel').classList.toggle('open', keysAdvOpen);
+  document.getElementById('keys-more-btn').classList.toggle('open', keysAdvOpen);
+}
+function toggleKeysChip(btn) {
+  const t = btn.dataset.type, v = btn.dataset.val, was = btn.classList.contains('sel');
+  document.querySelectorAll(`#keys-adv-panel .adv-chip[data-type="${t}"]`).forEach(c => c.classList.remove('sel'));
+  if (!was) { btn.classList.add('sel'); keysF[t] = v; } else { keysF[t] = null; }
+  applyKeys();
+}
+function clearKeysAdv() {
+  document.querySelectorAll('#keys-adv-panel .adv-chip').forEach(c => c.classList.remove('sel'));
+  keysF.size = keysF.conn = null; applyKeys();
+}
+function updKeysCount() {
+  const n = [keysF.size, keysF.conn].filter(Boolean).length;
+  const b = document.getElementById('keys-adv-count');
+  b.style.display = n ? 'inline' : 'none'; b.textContent = n;
+}
+
+// ─── CONTACT ────────────────────────────────────────────────────
+function handleSubmit(btn) {
+  btn.textContent = 'Enviando...'; btn.disabled = true;
+  setTimeout(() => {
+    btn.style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+  }, 1000);
+}
+
+// ─── INIT ────────────────────────────────────────────────────────
+renderMice();
+renderKeys();
+</script>
+</body>
+</html>
+HTMLEOF
+echo "done"
