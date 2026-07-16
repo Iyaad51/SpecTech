@@ -1,4 +1,5 @@
 
+cat > /mnt/user-data/outputs/specversus-v3.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -135,6 +136,7 @@
   .feat-badge { font-size: 9px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 8px; border-radius: 10px; }
   .feat-mouse { background: rgba(0,229,255,0.1); color: var(--accent-cyan); border: 1px solid rgba(0,229,255,0.2); }
   .feat-key   { background: rgba(168,85,247,0.1); color: #c084fc; border: 1px solid rgba(168,85,247,0.2); }
+  .feat-audio { background: rgba(236,72,153,0.1); color: #f472b6; border: 1px solid rgba(236,72,153,0.2); }
 
   /* ── NAV CARDS (home CTA) ── */
   .nav-card {
@@ -147,6 +149,10 @@
   .nav-card.mice-card::before { background: radial-gradient(circle at 30% 50%, rgba(0,229,255,0.08), transparent 70%); }
   .nav-card.keys-card { background: linear-gradient(145deg, #120b28, #1a0d38); }
   .nav-card.keys-card::before { background: radial-gradient(circle at 70% 50%, rgba(168,85,247,0.1), transparent 70%); }
+  .nav-card.audio-card { background: linear-gradient(145deg, #1c0b1d, #290d2c); }
+  .nav-card.audio-card::before { background: radial-gradient(circle at 50% 50%, rgba(236,72,153,0.1), transparent 70%); }
+  .nav-card.mads-card { background: linear-gradient(145deg, #07171e, #09262f); }
+  .nav-card.mads-card::before { background: radial-gradient(circle at 50% 50%, rgba(0,229,255,0.08), transparent 70%); }
   .nav-card:hover { transform: translateY(-3px); border-color: var(--border-hover); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
   .nav-card:hover::before { opacity: 1; }
   .nav-card .card-icon { font-size: 36px; margin-bottom: 14px; display: block; }
@@ -156,11 +162,11 @@
   .nav-card:hover .arrow { opacity: 1; transform: translateX(4px); }
 
   /* ── BADGES ── */
-  .badge-low     { background: rgba(16,185,129,0.12); color: #34d399; border: 1px solid rgba(52,211,153,0.25); }
-  .badge-mid     { background: rgba(79,142,255,0.12); color: #7eb8ff; border: 1px solid rgba(79,142,255,0.25); }
-  .badge-high    { background: rgba(168,85,247,0.12); color: #c084fc; border: 1px solid rgba(168,85,247,0.25); }
-  .badge-hall    { background: rgba(0,229,255,0.1); color: #67e8f9; border: 1px solid rgba(0,229,255,0.2); }
-  .badge-mec     { background: rgba(234,179,8,0.1); color: #fbbf24; border: 1px solid rgba(234,179,8,0.2); }
+  .badge-low      { background: rgba(16,185,129,0.12); color: #34d399; border: 1px solid rgba(52,211,153,0.25); }
+  .badge-mid      { background: rgba(79,142,255,0.12); color: #7eb8ff; border: 1px solid rgba(79,142,255,0.25); }
+  .badge-high     { background: rgba(168,85,247,0.12); color: #c084fc; border: 1px solid rgba(168,85,247,0.25); }
+  .badge-hall     { background: rgba(0,229,255,0.1); color: #67e8f9; border: 1px solid rgba(0,229,255,0.2); }
+  .badge-mec      { background: rgba(234,179,8,0.1); color: #fbbf24; border: 1px solid rgba(234,179,8,0.2); }
   .badge-special { background: rgba(236,72,153,0.1); color: #f472b6; border: 1px solid rgba(236,72,153,0.2); }
 
   /* ── FILTER BUTTONS ── */
@@ -225,13 +231,20 @@
   .spec-key { color: var(--text-dim); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; min-width: 90px; flex-shrink: 0; }
   .spec-val { color: #c8d8f8; font-weight: 400; line-height: 1.4; }
 
-  /* ── WHY BUY ── */
+  /* ── WHY BUY / WARN ── */
   .why-buy {
     background: linear-gradient(135deg, rgba(79,142,255,0.08), rgba(0,229,255,0.04));
     border: 1px solid rgba(79,142,255,0.15); border-radius: 8px;
     padding: 10px 14px; margin-top: 14px; font-size: 12.5px; color: #9ab8f0; line-height: 1.5;
   }
   .why-buy-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 4px; }
+  
+  .why-warn {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.03));
+    border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 8px;
+    padding: 10px 14px; margin-top: 14px; font-size: 12.5px; color: #fca5a5; line-height: 1.5;
+  }
+  .why-warn-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: #ef4444; text-transform: uppercase; margin-bottom: 4px; }
 
   /* ── BUY LINK ── */
   .buy-link {
@@ -264,7 +277,7 @@
   .stat-chip { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 6px; padding: 8px 16px; font-size: 12px; color: var(--text-muted); }
   .stat-chip strong { color: var(--text-main); font-size: 18px; font-weight: 700; display: block; }
 
-  /* ── ABOUT ── */
+  /* ── ABOUT / VALUE CARDS ── */
   .about-value-card {
     background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
     padding: 24px; transition: all 0.2s;
@@ -324,6 +337,8 @@
     <button class="nav-link active" data-section="home"   onclick="showSection('home')">Inicio</button>
     <button class="nav-link"        data-section="mice"   onclick="showSection('mice')">Ratones</button>
     <button class="nav-link"        data-section="keys"   onclick="showSection('keys')">Teclados</button>
+    <button class="nav-link"        data-section="audio"  onclick="showSection('audio')">Audio</button>
+    <button class="nav-link"        data-section="pads"   onclick="showSection('pads')">Mauspads</button>
     <button class="nav-link"        data-section="about"  onclick="showSection('about')">Sobre Nosotros</button>
     <button class="nav-link"        data-section="contact" onclick="showSection('contact')">Contacto</button>
   </div>
@@ -335,6 +350,8 @@
   <button class="mob-link active" data-section="home"    onclick="showSection('home');closeMobile()">Inicio</button>
   <button class="mob-link"        data-section="mice"    onclick="showSection('mice');closeMobile()">Ratones</button>
   <button class="mob-link"        data-section="keys"    onclick="showSection('keys');closeMobile()">Teclados</button>
+  <button class="mob-link"        data-section="audio"   onclick="showSection('audio');closeMobile()">Audio</button>
+  <button class="mob-link"        data-section="pads"    onclick="showSection('pads');closeMobile()">Mauspads</button>
   <button class="mob-link"        data-section="about"   onclick="showSection('about');closeMobile()">Sobre Nosotros</button>
   <button class="mob-link"        data-section="contact" onclick="showSection('contact');closeMobile()">Contacto</button>
 </div>
@@ -344,14 +361,46 @@
 <div class="page-wrap">
 
   <div style="text-align:center; padding:48px 0 44px; position:relative;">
-    <div style="font-size:10px; letter-spacing:0.25em; font-weight:700; color:var(--accent-cyan); text-transform:uppercase; margin-bottom:16px; opacity:0.7;">Tu guía sin hype · 2025</div>
+    <div style="font-size:10px; letter-spacing:0.25em; font-weight:700; color:var(--accent-cyan); text-transform:uppercase; margin-bottom:16px; opacity:0.7;">Tu guía de hardware chino sin tonterías · 2026</div>
     <h1 class="display-font" style="font-size:clamp(42px,8vw,84px); font-weight:700; line-height:1; margin-bottom:18px;">
       <span class="grad-text">Spec</span><span style="color:var(--text-main);">Versus</span>
     </h1>
-    <p style="color:var(--text-muted); font-size:15px; max-width:500px; margin:0 auto; line-height:1.8;">
-      Comparativas reales de periféricos gaming. Sin relleno, sin hype. Solo los datos que necesitas.
+    <p style="color:var(--text-muted); font-size:15px; max-width:600px; margin:0 auto; line-height:1.8;">
+      Analizamos las marcas que buscan darte el máximo rendimiento por el menor dinero posible. Honestidad brutal en periféricos de importación.
     </p>
     <div class="scan-line"></div>
+  </div>
+
+  <!-- ── NUEVO APARTADO: INFORMACIÓN DE MARCAS ── -->
+  <div style="margin-bottom:44px;">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px;">
+      <span style="font-size:10px; font-weight:800; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-dim);">🛡️ Análisis Crítico de Marcas</span>
+      <div style="flex:1; height:1px; background:var(--border);"></div>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr; md:grid-template-columns:1fr 1fr; gap:16px;" class="grid md:grid-cols-2">
+      <!-- Attack Shark -->
+      <div class="about-value-card border-red-500/20 bg-red-950/5">
+        <h3 class="display-font text-red-400 font-bold text-lg mb-2 flex items-center gap-2">
+          🦈 Attack Shark <span class="text-xs bg-red-950 text-red-400 border border-red-500/30 px-2 py-0.5 rounded-full">Alerta / Rendimiento Inestable</span>
+        </h3>
+        <p class="text-sm text-gray-300 leading-relaxed">
+          Es una marca ligeramente mala en líneas generales. Su estrategia se basa en vender productos muy baratos con especificaciones teóricas de gama alta y una estética súper agresiva y llamativa. Sin embargo, sufre de <strong>controles de calidad (QC) pésimos</strong>, componentes propensos a fallos tempranos y un rendimiento inestable en sus sensores y conexiones inalámbricas. 
+        </p>
+        <p class="text-xs text-red-300/80 mt-3 italic">
+          ⚠️ Veredicto: Que sea barato y bonito no significa que sea bueno. Solo lo recomendamos si tu presupuesto es extremadamente bajo (pobreza económica máxima) y no puedes estirarte un par de euros más por opciones de calidad.
+        </p>
+      </div>
+
+      <!-- VXE -->
+      <div class="about-value-card border-green-500/20 bg-green-950/5">
+        <h3 class="display-font text-green-400 font-bold text-lg mb-2 flex items-center gap-2">
+          👑 VXE (VGN) <span class="text-xs bg-green-950 text-green-400 border border-green-500/30 px-2 py-0.5 rounded-full">Recomendación Absoluta</span>
+        </h3>
+        <p class="text-sm text-gray-300 leading-relaxed">
+          Actualmente es **la mejor marca de ratones baratos del mercado**. No tienen rival en su rango de precios. Ofrecen ratones con un peso ridículamente bajo, sensores premium impecables de última generación (como el PixArt PAW3395) y calidades de ensamblaje impensables para lo poco que cuestan. Aquí pagas por rendimiento puro, sin trucos ni sobrecostes.
+        </p>
+      </div>
+    </div>
   </div>
 
   <!-- Featured -->
@@ -364,61 +413,57 @@
 
       <!-- Featured: VXE Dragonfly R1 -->
       <div class="feat-card">
-        <!-- SUBE TU IMAGEN AQUÍ -->
         <img src="https://placehold.co/400x220/0d1a2e/4f8eff?text=VXE+Dragonfly+R1" alt="VXE Dragonfly R1" class="prod-img" style="border-radius:0; margin-bottom:0;">
         <div class="feat-card-body">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
             <span class="feat-badge feat-mouse">🖱️ Ratón</span>
             <span style="font-size:10px; color:var(--text-dim);">Low Budget</span>
           </div>
-          <div class="display-font" style="font-size:15px; font-weight:700; margin-bottom:5px;">VXE Dragonfly R1</div>
+          <div class="display-font" style="font-size:15px; font-weight:700; margin-bottom:5px;">VXE Dragonfly R1 Pro</div>
           <div style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:8px;">El rey indiscutible de la calidad-precio del mercado actual.</div>
-          <div style="font-size:11px; color:var(--text-dim);">51g · PAW3395 · Inalámbrico 2.4GHz</div>
+          <div style="font-size:11px; color:var(--text-dim);">48g · PAW3395 · Inalámbrico 4K</div>
         </div>
       </div>
 
-      <!-- Featured: WLMouse Beast X Pro -->
-      <div class="feat-card" style="border-color:rgba(168,85,247,0.2);">
-        <!-- SUBE TU IMAGEN AQUÍ -->
-        <img src="https://placehold.co/400x220/120b28/a855f7?text=WLMouse+Beast+X+Pro" alt="WLMouse Beast X Pro" class="prod-img" style="border-radius:0; margin-bottom:0;">
+      <!-- Featured: ATK N9 Ultra -->
+      <div class="feat-card" style="border-color:rgba(236,72,153,0.2);">
+        <img src="https://placehold.co/400x220/1a0414/ec4899?text=ATK+N9+Ultra" alt="ATK N9 Ultra" class="prod-img" style="border-radius:0; margin-bottom:0;">
         <div class="feat-card-body">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <span class="feat-badge feat-mouse">🖱️ Ratón</span>
-            <span style="font-size:10px; color:#c084fc;">High End</span>
+            <span class="feat-badge feat-audio">🎧 Auriculares</span>
+            <span style="font-size:10px; color:#f472b6;">Wireless</span>
           </div>
-          <div class="display-font" style="font-size:15px; font-weight:700; margin-bottom:5px; color:#e2b4ff;">WLMouse Beast X Pro</div>
-          <div style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:8px;">Magnesio aeronáutico: estética espectacular y ligereza premium.</div>
-          <div style="font-size:11px; color:var(--text-dim);">39g · PAW3395 · Inalámbrico 8K</div>
+          <div class="display-font" style="font-size:15px; font-weight:700; margin-bottom:5px; color:#fda4af;">ATK N9 Ultra</div>
+          <div style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:8px;">Audio inalámbrico de ultra-baja latencia para competitivos exigentes.</div>
+          <div style="font-size:11px; color:var(--text-dim);">Doble Batería · 2.4GHz + BT · Driver 50mm</div>
         </div>
       </div>
 
-      <!-- Featured: IROK MG68 ACE -->
+      <!-- Featured: Mercury L68 -->
       <div class="feat-card" style="border-color:rgba(0,229,255,0.15);">
-        <!-- SUBE TU IMAGEN AQUÍ -->
-        <img src="https://placehold.co/400x220/041a1e/00e5ff?text=IROK+MG68+ACE" alt="IROK MG68 ACE" class="prod-img" style="border-radius:0; margin-bottom:0;">
+        <img src="https://placehold.co/400x220/041a1e/00e5ff?text=Mercury+L68" alt="Mercury L68" class="prod-img" style="border-radius:0; margin-bottom:0;">
         <div class="feat-card-body">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
             <span class="feat-badge feat-key">⌨️ Teclado</span>
             <span style="font-size:10px; color:#67e8f9;">Hall Effect</span>
           </div>
-          <div class="display-font" style="font-size:15px; font-weight:700; margin-bottom:5px; color:#a5f3fc;">IROK MG68 ACE</div>
-          <div style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:8px;">Rapid Trigger al máximo rendimiento en el formato más compacto.</div>
-          <div style="font-size:11px; color:var(--text-dim);">65% · Hall Effect · 2.4GHz + BT + Cable</div>
+          <div class="display-font" style="font-size:15px; font-weight:700; margin-bottom:5px; color:#a5f3fc;">Mercury L68</div>
+          <div style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:8px;">Switches magnéticos optimizados para Rapid Trigger instantáneo.</div>
+          <div style="font-size:11px; color:var(--text-dim);">68 Teclas · Hall Effect · Alum Plate</div>
         </div>
       </div>
 
-      <!-- Featured: Royal Kludge RK S85 -->
-      <div class="feat-card" style="border-color:rgba(236,72,153,0.2);">
-        <!-- SUBE TU IMAGEN AQUÍ -->
-        <img src="https://placehold.co/400x220/1a0414/ec4899?text=Royal+Kludge+RK+S85" alt="Royal Kludge RK S85" class="prod-img" style="border-radius:0; margin-bottom:0;">
+      <!-- Featured: Artisan FX Zero -->
+      <div class="feat-card" style="border-color:rgba(168,85,247,0.2);">
+        <img src="https://placehold.co/400x220/120b28/a855f7?text=Artisan+FX+Zero" alt="Artisan FX Zero" class="prod-img" style="border-radius:0; margin-bottom:0;">
         <div class="feat-card-body">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <span class="feat-badge feat-key">⌨️ Teclado</span>
-            <span style="font-size:10px; color:#f472b6;">Ed. Especial</span>
+            <span class="feat-badge feat-key">⬜ Pad</span>
+            <span style="font-size:10px; color:#c084fc;">Premium</span>
           </div>
-          <div class="display-font" style="font-size:15px; font-weight:700; margin-bottom:5px; color:#fda4af;">Royal Kludge RK S85</div>
-          <div style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:8px;">Pantalla LCD personalizable + switches ultra-suaves. Estética única.</div>
-          <div style="font-size:11px; color:var(--text-dim);">75% · Beige / Cloud · Triple Modo</div>
+          <div class="display-font" style="font-size:15px; font-weight:700; margin-bottom:5px; color:#e2b4ff;">Artisan FX Zero</div>
+          <div style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:8px;">El estándar de oro mundial. Control absoluto y durabilidad infinita.</div>
+          <div style="font-size:11px; color:var(--text-dim);">Base Poron · Tejido de precisión</div>
         </div>
       </div>
 
@@ -430,17 +475,29 @@
     <span style="font-size:10px; font-weight:800; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-dim);">Explorar catálogos</span>
     <div style="flex:1; height:1px; background:var(--border);"></div>
   </div>
-  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px;">
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px;">
     <div class="nav-card mice-card" onclick="showSection('mice')">
       <span class="card-icon">🖱️</span>
-      <h3 class="display-font grad-text">Ver Ratones Gaming</h3>
-      <p>11 ratones comparados por peso, sensor, conectividad y agarre. Low Budget a High End.</p>
+      <h3 class="display-font grad-text">Ratones</h3>
+      <p>Modelos top de VXE, ATK, Mchose, Scyrox y WLmouse.</p>
       <span class="arrow">→</span>
     </div>
     <div class="nav-card keys-card" onclick="showSection('keys')">
       <span class="card-icon">⌨️</span>
-      <h3 class="display-font grad-text-purple">Ver Teclados Mecánicos</h3>
-      <p>8 teclados: Hall Effect magnéticos, mecánicos ISO y ediciones especiales con pantalla LCD.</p>
+      <h3 class="display-font grad-text-purple">Teclados</h3>
+      <p>Aula, Scyrox, Mchose, Mercury L68 y más.</p>
+      <span class="arrow">→</span>
+    </div>
+    <div class="nav-card audio-card" onclick="showSection('audio')">
+      <span class="card-icon">🎧</span>
+      <h3 class="display-font text-pink-400">Audio</h3>
+      <p>Comparativa directa entre Mchose V9 Pro y ATK N9 Ultra.</p>
+      <span class="arrow">→</span>
+    </div>
+    <div class="nav-card mads-card" onclick="showSection('pads')">
+      <span class="card-icon">⬜</span>
+      <h3 class="display-font text-cyan-400">Mauspads</h3>
+      <p>Desde el cielo de Artisan hasta gangas de ATK y Attack Shark.</p>
       <span class="arrow">→</span>
     </div>
   </div>
@@ -454,65 +511,134 @@
 <div class="page-wrap">
 
   <div style="text-align:center; margin-bottom:36px; position:relative; padding-bottom:28px;">
-    <div style="font-size:10px; letter-spacing:0.2em; font-weight:700; color:var(--accent-cyan); text-transform:uppercase; margin-bottom:12px; opacity:0.8;">SpecVersus · Ratones Gaming 2025</div>
-    <h2 class="display-font grad-text" style="font-size:clamp(24px,4vw,44px); font-weight:700; margin-bottom:10px;">Ratones Gaming<br>sin Trampa</h2>
-    <p style="color:var(--text-muted); font-size:14px; max-width:460px; margin:0 auto; line-height:1.7;">11 ratones comparados por peso, sensor y agarre. Sin relleno.</p>
+    <div style="font-size:10px; letter-spacing:0.2em; font-weight:700; color:var(--accent-cyan); text-transform:uppercase; margin-bottom:12px; opacity:0.8;">SpecVersus · Ratones Seleccionados</div>
+    <h2 class="display-font grad-text" style="font-size:clamp(24px,4vw,44px); font-weight:700; margin-bottom:10px;">La Élite de los Ratones Chinos</h2>
+    <p style="color:var(--text-muted); font-size:14px; max-width:460px; margin:0 auto; line-height:1.7;">Hemos eliminado toda la paja y las marcas dudosas (como Attack Shark). Solo hardware top.</p>
     <div class="scan-line"></div>
   </div>
 
   <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:26px;">
-    <div class="stat-chip"><strong>11</strong>Ratones</div>
-    <div class="stat-chip"><strong>36–59g</strong>Rango peso</div>
-    <div class="stat-chip"><strong>2</strong>Sensores top</div>
-    <div class="stat-chip"><strong>3</strong>Gamas</div>
+    <div class="stat-chip"><strong>5</strong>Marcas Únicas</div>
+    <div class="stat-chip"><strong>39–54g</strong>Rango de peso</div>
+    <div class="stat-chip"><strong>PAW3395 / 3950</strong>Sensores</div>
   </div>
 
-  <div style="margin-bottom:8px;">
-    <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
-      <button class="filter-btn active" onclick="setMiceFilter('budget','all',this)">Todos</button>
-      <button class="filter-btn" onclick="setMiceFilter('budget','low',this)"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#34d399;margin-right:5px;vertical-align:middle;"></span>Low Budget</button>
-      <button class="filter-btn" onclick="setMiceFilter('budget','mid',this)"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#7eb8ff;margin-right:5px;vertical-align:middle;"></span>Mid Range</button>
-      <button class="filter-btn" onclick="setMiceFilter('budget','high',this)"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#c084fc;margin-right:5px;vertical-align:middle;"></span>High End</button>
-      <button class="more-btn" id="mice-more-btn" onclick="toggleMiceAdv()">
-        <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-        Más Filtros <span class="count-badge" id="mice-adv-count" style="display:none;"></span>
-      </button>
-    </div>
-    <div class="adv-panel" id="mice-adv-panel">
-      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px;">
-        <div>
-          <div class="adv-label">⚖️ Peso</div>
-          <div style="display:flex; flex-wrap:wrap; gap:6px;">
-            <button class="adv-chip" data-type="weight" data-val="lt40"  onclick="toggleMiceChip(this)">Menos de 40g</button>
-            <button class="adv-chip" data-type="weight" data-val="40-55" onclick="toggleMiceChip(this)">40g – 55g</button>
-            <button class="adv-chip" data-type="weight" data-val="gt55"  onclick="toggleMiceChip(this)">Más de 55g</button>
-          </div>
+  <div id="mice-grid" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:16px;">
+    <!-- Card VXE R1 Pro -->
+    <div class="prod-card">
+      <div class="card-glow-line"></div>
+      <img src="https://placehold.co/400x220/0d1526/4f8eff?text=VXE+Dragonfly+R1+Pro" alt="VXE Dragonfly R1 Pro" class="prod-img">
+      <div class="prod-card-body">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span class="badge-low feat-badge">VXE</span>
+          <span style="font-size:11px; color:#34d399; font-weight:600;">Rey Calidad/Precio</span>
         </div>
-        <div>
-          <div class="adv-label">✋ Grip</div>
-          <div style="display:flex; flex-wrap:wrap; gap:6px;">
-            <button class="adv-chip" data-type="grip" data-val="palm"      onclick="toggleMiceChip(this)">Palm</button>
-            <button class="adv-chip" data-type="grip" data-val="claw"      onclick="toggleMiceChip(this)">Claw</button>
-            <button class="adv-chip" data-type="grip" data-val="fingertip" onclick="toggleMiceChip(this)">Fingertip</button>
-          </div>
-        </div>
-        <div>
-          <div class="adv-label">📐 Forma</div>
-          <div style="display:flex; flex-wrap:wrap; gap:6px;">
-            <button class="adv-chip" data-type="shape" data-val="simetrico"  onclick="toggleMiceChip(this)">Simétrico</button>
-            <button class="adv-chip" data-type="shape" data-val="ergonomico" onclick="toggleMiceChip(this)">Ergonómico</button>
-          </div>
+        <h3 class="display-font" style="font-size:18px; font-weight:700; margin-bottom:12px;">Dragonfly R1 Pro</h3>
+        
+        <div class="spec-row"><span class="spec-key">Peso</span><span class="spec-val">48g (Ultra ligero)</span></div>
+        <div class="spec-row"><span class="spec-key">Sensor</span><span class="spec-val">PixArt PAW3395 (26,000 DPI)</span></div>
+        <div class="spec-row"><span class="spec-key">MCU / Polling</span><span class="spec-val">Nordic 52840 / Soporta 4K</span></div>
+        <div class="spec-row"><span class="spec-key">Switches</span><span class="spec-val">Huano Pink Dot (Crispy)</span></div>
+
+        <div class="why-buy">
+          <div class="why-buy-label">¿Por qué comprarlo?</div>
+          Por 35-40€ tienes literalmente un ratón que compite cara a cara con ratones de Logitech de 150€. No hay fallo posible.
         </div>
       </div>
-      <button onclick="clearMiceAdv()" style="margin-top:16px;padding:5px 14px;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,0.1);background:transparent;color:var(--text-dim);" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-dim)'">Limpiar filtros avanzados</button>
+    </div>
+
+    <!-- Card ATK X1 Pro -->
+    <div class="prod-card">
+      <div class="card-glow-line"></div>
+      <img src="https://placehold.co/400x220/0d1526/4f8eff?text=ATK+X1+Pro" alt="ATK X1 Pro" class="prod-img">
+      <div class="prod-card-body">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span class="badge-mid feat-badge">ATK</span>
+          <span style="font-size:11px; color:#7eb8ff; font-weight:600;">Alto Rendimiento</span>
+        </div>
+        <h3 class="display-font" style="font-size:18px; font-weight:700; margin-bottom:12px;">ATK X1 Pro</h3>
+        
+        <div class="spec-row"><span class="spec-key">Peso</span><span class="spec-val">49g</span></div>
+        <div class="spec-row"><span class="spec-key">Sensor</span><span class="spec-val">PixArt PAW3950 (Nueva Gen)</span></div>
+        <div class="spec-row"><span class="spec-key">MCU / Polling</span><span class="spec-val">Nordic 52840 / Soporta 8K nativo</span></div>
+        <div class="spec-row"><span class="spec-key">Forma</span><span class="spec-val">Inspirado en Viper V3 Pro</span></div>
+
+        <div class="why-buy">
+          <div class="why-buy-label">¿Por qué comprarlo?</div>
+          Lleva el sensor PAW3950 y 8,000 Hz de tasa de sondeo a un precio de risa. Estabilidad perfecta.
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Mchose M8 -->
+    <div class="prod-card">
+      <div class="card-glow-line"></div>
+      <img src="https://placehold.co/400x220/0d1526/4f8eff?text=Mchose+M8" alt="Mchose M8" class="prod-img">
+      <div class="prod-card-body">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span class="badge-mid feat-badge">Mchose</span>
+          <span style="font-size:11px; color:#7eb8ff; font-weight:600;">Forma Top</span>
+        </div>
+        <h3 class="display-font" style="font-size:18px; font-weight:700; margin-bottom:12px;">Mchose M8</h3>
+        
+        <div class="spec-row"><span class="spec-key">Peso</span><span class="spec-val">51g</span></div>
+        <div class="spec-row"><span class="spec-key">Sensor</span><span class="spec-val">PAW3395</span></div>
+        <div class="spec-row"><span class="spec-key">Switches</span><span class="spec-val">Omron Opticals (Sin Double Click)</span></div>
+        <div class="spec-row"><span class="spec-key">Batería</span><span class="spec-val">Hasta 80h</span></div>
+
+        <div class="why-buy">
+          <div class="why-buy-label">¿Por qué comprarlo?</div>
+          Una de las mejores implementaciones del chasis simétrico pequeño. Perfecto para Claw Grip o Fingertip.
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Scyrox V8 -->
+    <div class="prod-card">
+      <div class="card-glow-line"></div>
+      <img src="https://placehold.co/400x220/0d1526/a855f7?text=Scyrox+V8" alt="Scyrox V8" class="prod-img">
+      <div class="prod-card-body">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span class="badge-high feat-badge">Scyrox</span>
+          <span style="font-size:11px; color:#c084fc; font-weight:600;">Revelación del Año</span>
+        </div>
+        <h3 class="display-font" style="font-size:18px; font-weight:700; margin-bottom:12px;">Scyrox V8</h3>
+        
+        <div class="spec-row"><span class="spec-key">Peso</span><span class="spec-val">36g (Peso pluma absoluto)</span></div>
+        <div class="spec-row"><span class="spec-key">Sensor</span><span class="spec-val">PAW3950</span></div>
+        <div class="spec-row"><span class="spec-key">Estructura</span><span class="spec-val">Sólida (Sin agujeros)</span></div>
+        <div class="spec-row"><span class="spec-key">Polling</span><span class="spec-val">8K Inalámbrico de fábrica</span></div>
+
+        <div class="why-buy">
+          <div class="why-buy-label">¿Por qué comprarlo?</div>
+          Pesar 36 gramos sin tener agujeros en la carcasa y rendir a 8K es una locura de ingeniería. Extremadamente ágil.
+        </div>
+      </div>
+    </div>
+
+    <!-- Card WLmouse Beast X -->
+    <div class="prod-card">
+      <div class="card-glow-line"></div>
+      <img src="https://placehold.co/400x220/0d1526/a855f7?text=WLmouse+Beast+X" alt="WLmouse Beast X" class="prod-img">
+      <div class="prod-card-body">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span class="badge-high feat-badge">WLmouse</span>
+          <span style="font-size:11px; color:#c084fc; font-weight:600;">Magnesio Premium</span>
+        </div>
+        <h3 class="display-font" style="font-size:18px; font-weight:700; margin-bottom:12px;">Beast X</h3>
+        
+        <div class="spec-row"><span class="spec-key">Material</span><span class="spec-val">Aleación de Magnesio</span></div>
+        <div class="spec-row"><span class="spec-key">Peso</span><span class="spec-val">39g</span></div>
+        <div class="spec-row"><span class="spec-key">Sensor</span><span class="spec-val">PAW3395 / PAW3950</span></div>
+        <div class="spec-row"><span class="spec-key">Diseño</span><span class="spec-val">Esqueleto estético premium</span></div>
+
+        <div class="why-buy">
+          <div class="why-buy-label">¿Por qué comprarlo?</div>
+          Si buscas la máxima rigidez estructural combinada con la ligereza extrema del magnesio. Su estética es simplemente inigualable.
+        </div>
+      </div>
     </div>
   </div>
-
-  <div style="margin:20px 0 16px; font-size:12px; color:var(--text-dim); display:flex; align-items:center; gap:8px;">
-    Mostrando <span id="mice-count" style="color:var(--accent-cyan); font-weight:700; font-size:14px;">11</span> ratones
-  </div>
-  <div id="mice-grid" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:16px;"></div>
-  <div id="empty-mice"><div style="font-size:36px;margin-bottom:10px;">🖱️</div><div style="font-size:15px;font-weight:600;color:var(--text-muted);margin-bottom:5px;">Sin resultados</div><div style="font-size:13px;">Prueba a cambiar los filtros.</div></div>
 
 </div>
 </div><!-- /mice -->
@@ -523,116 +649,342 @@
 <div class="page-wrap">
 
   <div style="text-align:center; margin-bottom:36px; position:relative; padding-bottom:28px;">
-    <div style="font-size:10px; letter-spacing:0.2em; font-weight:700; color:#c084fc; text-transform:uppercase; margin-bottom:12px; opacity:0.8;">SpecVersus · Teclados 2025</div>
-    <h2 class="display-font grad-text-purple" style="font-size:clamp(24px,4vw,44px); font-weight:700; margin-bottom:10px;">Teclados Mecánicos<br>sin Trampa</h2>
-    <p style="color:var(--text-muted); font-size:14px; max-width:460px; margin:0 auto; line-height:1.7;">8 teclados: Hall Effect, mecánicos ISO y ediciones especiales.</p>
+    <div style="font-size:10px; letter-spacing:0.2em; font-weight:700; color:#c084fc; text-transform:uppercase; margin-bottom:12px; opacity:0.8;">SpecVersus · Teclados Mecánicos</div>
+    <h2 class="display-font grad-text-purple" style="font-size:clamp(24px,4vw,44px); font-weight:700; margin-bottom:10px;">Teclados de Última Generación</h2>
+    <p style="color:var(--text-muted); font-size:14px; max-width:460px; margin:0 auto; line-height:1.7;">La revolución de los switches magnéticos (Hall Effect) y mecánicos Premium.</p>
     <div style="position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent-purple),transparent);opacity:0.4;"></div>
   </div>
 
-  <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:26px;">
-    <div class="stat-chip"><strong>8</strong>Teclados</div>
-    <div class="stat-chip"><strong>60%–96%</strong>Formatos</div>
-    <div class="stat-chip"><strong>3</strong>Categorías</div>
-  </div>
-
-  <div style="margin-bottom:8px;">
-    <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
-      <button class="filter-btn active" onclick="setKeysFilter('cat','all',this)">Todos</button>
-      <button class="filter-btn" onclick="setKeysFilter('cat','hall',this)"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#67e8f9;margin-right:5px;vertical-align:middle;"></span>Hall Effect</button>
-      <button class="filter-btn" onclick="setKeysFilter('cat','mec',this)"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#fbbf24;margin-right:5px;vertical-align:middle;"></span>Mecánicos ISO</button>
-      <button class="filter-btn" onclick="setKeysFilter('cat','special',this)"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#f472b6;margin-right:5px;vertical-align:middle;"></span>Ed. Especiales</button>
-      <button class="more-btn" id="keys-more-btn" onclick="toggleKeysAdv()">
-        <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-        Más Filtros <span class="count-badge" id="keys-adv-count" style="display:none;"></span>
-      </button>
-    </div>
-    <div class="adv-panel" id="keys-adv-panel">
-      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px;">
-        <div>
-          <div class="adv-label">📐 Formato</div>
-          <div style="display:flex; flex-wrap:wrap; gap:6px;">
-            <button class="adv-chip" data-type="size" data-val="compact" onclick="toggleKeysChip(this)">60% / 65%</button>
-            <button class="adv-chip" data-type="size" data-val="75"      onclick="toggleKeysChip(this)">75%</button>
-            <button class="adv-chip" data-type="size" data-val="tkl"     onclick="toggleKeysChip(this)">TKL / 96%</button>
-          </div>
+  <div id="keys-grid" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:16px;">
+    <!-- Aula F75 -->
+    <div class="prod-card">
+      <div class="card-glow-line" style="background:linear-gradient(90deg, transparent, var(--accent-purple), transparent);"></div>
+      <img src="https://placehold.co/400x220/0d1526/a855f7?text=Aula+F75" alt="Aula F75" class="prod-img">
+      <div class="prod-card-body">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span class="badge-mec feat-badge">Aula</span>
+          <span style="font-size:11px; color:#fbbf24; font-weight:600;">Sonido "Creamy" de locos</span>
         </div>
-        <div>
-          <div class="adv-label">📡 Conectividad</div>
-          <div style="display:flex; flex-wrap:wrap; gap:6px;">
-            <button class="adv-chip" data-type="conn" data-val="wireless" onclick="toggleKeysChip(this)">Inalámbrico</button>
-            <button class="adv-chip" data-type="conn" data-val="cable"    onclick="toggleKeysChip(this)">Solo Cable</button>
-            <button class="adv-chip" data-type="conn" data-val="triple"   onclick="toggleKeysChip(this)">Triple Modo</button>
-          </div>
+        <h3 class="display-font" style="font-size:18px; font-weight:700; margin-bottom:12px;">Aula F75</h3>
+        
+        <div class="spec-row"><span class="spec-key">Formato</span><span class="spec-val">75% (Compacto con flechas)</span></div>
+        <div class="spec-row"><span class="spec-key">Estructura</span><span class="spec-val">Gasket Mount / Placa de PC</span></div>
+        <div class="spec-row"><span class="spec-key">Conexión</span><span class="spec-val">Triple Modo (2.4G / BT / Cable)</span></div>
+        <div class="spec-row"><span class="spec-key">Switches</span><span class="spec-val">Leobog Reaper (Pre-lubricados)</span></div>
+
+        <div class="why-buy">
+          <div class="why-buy-label">¿Por qué comprarlo?</div>
+          Su acústica de stock suena mejor que teclados custom de 200€. Espectacularmente cómodo para escribir y jugar.
         </div>
       </div>
-      <button onclick="clearKeysAdv()" style="margin-top:16px;padding:5px 14px;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,0.1);background:transparent;color:var(--text-dim);" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-dim)'">Limpiar filtros avanzados</button>
+    </div>
+
+    <!-- Mercury M68 / L68 -->
+    <div class="prod-card">
+      <div class="card-glow-line" style="background:linear-gradient(90deg, transparent, var(--accent-purple), transparent);"></div>
+      <img src="https://placehold.co/400x220/0d1526/a855f7?text=Mercury+L68" alt="Mercury L68" class="prod-img">
+      <div class="prod-card-body">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span class="badge-hall feat-badge">Mercury</span>
+          <span style="font-size:11px; color:#00e5ff; font-weight:600;">Rapid Trigger Pro</span>
+        </div>
+        <h3 class="display-font" style="font-size:18px; font-weight:700; margin-bottom:12px;">Mercury L68</h3>
+        
+        <div class="spec-row"><span class="spec-key">Switches</span><span class="spec-val">Magnéticos (Hall Effect)</span></div>
+        <div class="spec-row"><span class="spec-key">Rendimiento</span><span class="spec-val">Rapid Trigger regulable a 0.1mm</span></div>
+        <div class="spec-row"><span class="spec-key">Latencia</span><span class="spec-val">Ultra Baja (Gaming competitivo)</span></div>
+        <div class="spec-row"><span class="spec-key">Chasis</span><span class="spec-val">Compacto 65% optimizado</span></div>
+
+        <div class="why-buy">
+          <div class="why-buy-label">¿Por qué comprarlo?</div>
+          Diseñado específicamente para shooters tácticos (Valorant, CS2). Frenados instantáneos sin input lag.
+        </div>
+      </div>
+    </div>
+
+    <!-- Mchose K75 -->
+    <div class="prod-card">
+      <div class="card-glow-line" style="background:linear-gradient(90deg, transparent, var(--accent-purple), transparent);"></div>
+      <img src="https://placehold.co/400x220/0d1526/a855f7?text=Mchose+K75" alt="Mchose K75" class="prod-img">
+      <div class="prod-card-body">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span class="badge-mec feat-badge">Mchose</span>
+          <span style="font-size:11px; color:#fbbf24; font-weight:600;">Premium Estético</span>
+        </div>
+        <h3 class="display-font" style="font-size:18px; font-weight:700; margin-bottom:12px;">Mchose K75</h3>
+        
+        <div class="spec-row"><span class="spec-key">Formato</span><span class="spec-val">75% Estilizado</span></div>
+        <div class="spec-row"><span class="spec-key">Switches</span><span class="spec-val">Switches mecánicos lineales de alta gama</span></div>
+        <div class="spec-row"><span class="spec-key">Keycaps</span><span class="spec-val">PBT Double-Shot de perfil Cherry</span></div>
+        <div class="spec-row"><span class="spec-key">Iluminación</span><span class="spec-val">RGB personalizable por tecla</span></div>
+
+        <div class="why-buy">
+          <div class="why-buy-label">¿Por qué comprarlo?</div>
+          Excelente calidad de construcción, tacto de los materiales inmejorable y software propio intuitivo.
+        </div>
+      </div>
+    </div>
+
+    <!-- Scyrox Teclado -->
+    <div class="prod-card">
+      <div class="card-glow-line" style="background:linear-gradient(90deg, transparent, var(--accent-purple), transparent);"></div>
+      <img src="https://placehold.co/400x220/0d1526/a855f7?text=Scyrox+Keyboard" alt="Scyrox Keyboard" class="prod-img">
+      <div class="prod-card-body">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span class="badge-special feat-badge">Scyrox</span>
+          <span style="font-size:11px; color:#f472b6; font-weight:600;">Inalámbrico Competitivo</span>
+        </div>
+        <h3 class="display-font" style="font-size:18px; font-weight:700; margin-bottom:12px;">Scyrox Gaming Board</h3>
+        
+        <div class="spec-row"><span class="spec-key">Estructura</span><span class="spec-val">Chasis ultraligero y rígido</span></div>
+        <div class="spec-row"><span class="spec-key">Switches</span><span class="spec-val">Magnéticos con respuesta táctil opcional</span></div>
+        <div class="spec-row"><span class="spec-key">Polling Rate</span><span class="spec-val">Hasta 4,000 Hz</span></div>
+
+        <div class="why-buy">
+          <div class="why-buy-label">¿Por qué comprarlo?</div>
+          Perfecto si quieres sincronizar tu ecosistema de ratón Scyrox con un teclado de rendimiento extremo.
+        </div>
+      </div>
+    </div>
+
+    <!-- Attack Shark K86 -->
+    <div class="prod-card">
+      <div class="card-glow-line" style="background:linear-gradient(90deg, transparent, #ef4444, transparent);"></div>
+      <img src="https://placehold.co/400x220/0d1526/ef4444?text=Attack+Shark+K86" alt="Attack Shark K86" class="prod-img">
+      <div class="prod-card-body">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span class="badge-special feat-badge text-red-400 border-red-500/20 bg-red-950/10">Attack Shark</span>
+          <span style="font-size:11px; color:#ef4444; font-weight:600;">Gama Baja Decente</span>
+        </div>
+        <h3 class="display-font" style="font-size:18px; font-weight:700; margin-bottom:12px;">K86 Mechanical</h3>
+        
+        <div class="spec-row"><span class="spec-key">Pantalla</span><span class="spec-val">Pantalla LCD Integrada</span></div>
+        <div class="spec-row"><span class="spec-key">Switches</span><span class="spec-val">Blue Whale Lineales</span></div>
+        <div class="spec-row"><span class="spec-key">Precio aprox.</span><span class="spec-val">40€ con pantalla</span></div>
+
+        <div class="why-warn">
+          <div class="why-warn-label">Advertencia de Compra</div>
+          Es de los pocos teclados medianamente buenos de la marca. Tiene pantalla LCD a precio ridículo, pero ten cuidado con su software inestable y posibles problemas de LED tras unos meses de uso. Compra bajo tu propio riesgo.
+        </div>
+      </div>
     </div>
   </div>
-
-  <div style="margin:20px 0 16px; font-size:12px; color:var(--text-dim); display:flex; align-items:center; gap:8px;">
-    Mostrando <span id="keys-count" style="color:#c084fc; font-weight:700; font-size:14px;">8</span> teclados
-  </div>
-  <div id="keys-grid" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:16px;"></div>
-  <div id="empty-keys"><div style="font-size:36px;margin-bottom:10px;">⌨️</div><div style="font-size:15px;font-weight:600;color:var(--text-muted);margin-bottom:5px;">Sin resultados</div><div style="font-size:13px;">Prueba a cambiar los filtros.</div></div>
 
 </div>
 </div><!-- /keys -->
 
 
-<!-- ══════════════════════════ ABOUT ══════════════════════════ -->
-<div id="section-about" class="sv-section">
-<div class="page-wrap" style="max-width:860px;">
+<!-- ══════════════════════════ AUDIO (NUEVA SECCIÓN) ══════════════════════════ -->
+<div id="section-audio" class="sv-section">
+<div class="page-wrap">
 
-  <div style="text-align:center; margin-bottom:52px; position:relative; padding-bottom:28px;">
-    <div style="font-size:10px; letter-spacing:0.2em; font-weight:700; color:var(--accent-cyan); text-transform:uppercase; margin-bottom:14px; opacity:0.8;">Quiénes somos</div>
-    <h2 class="display-font grad-text" style="font-size:clamp(28px,5vw,50px); font-weight:700; margin-bottom:14px;">Sobre SpecVersus</h2>
-    <p style="color:var(--text-muted); font-size:15px; line-height:1.8; max-width:560px; margin:0 auto;">Una plataforma construida por y para gamers que están hartos del marketing vacío.</p>
+  <div style="text-align:center; margin-bottom:36px; position:relative; padding-bottom:28px;">
+    <div style="font-size:10px; letter-spacing:0.2em; font-weight:700; color:var(--accent-purple); text-transform:uppercase; margin-bottom:12px; opacity:0.8;">SpecVersus · Batalla de Audio 2026</div>
+    <h2 class="display-font grad-text-purple" style="font-size:clamp(24px,4vw,44px); font-weight:700; margin-bottom:10px;">Los Reyes del Audio Gaming Chino</h2>
+    <p style="color:var(--text-muted); font-size:14px; max-width:550px; margin:0 auto; line-height:1.7;">Dos auriculares espectaculares frente a frente. Son extremadamente parecidos en rendimiento, por lo que la decisión se basa en pequeños detalles técnicos.</p>
     <div class="scan-line"></div>
   </div>
 
-  <!-- Mission -->
-  <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:36px; margin-bottom:28px; position:relative; overflow:hidden;">
-    <div style="position:absolute;top:0;right:0;width:280px;height:280px;background:radial-gradient(circle,rgba(79,142,255,0.06),transparent 70%);pointer-events:none;"></div>
-    <div style="font-size:11px; font-weight:700; letter-spacing:0.15em; color:var(--accent-cyan); text-transform:uppercase; margin-bottom:14px;">Nuestra misión</div>
-    <p style="font-size:16px; color:var(--text-main); line-height:1.9; margin-bottom:16px;">
-      <strong>SpecVersus</strong> nació de una pregunta simple: <em style="color:var(--accent-cyan);">¿por qué es tan difícil saber qué ratón o teclado comprar?</em>
-    </p>
-    <p style="font-size:14px; color:var(--text-muted); line-height:1.8;">
-      Analizamos al milímetro el peso, el tipo de sensor, el grip, la forma y la conectividad de cada periférico. Sin listas de esponsorizados, sin valoraciones infladas. Solo datos reales, comparativas honestas y recomendaciones que tienen sentido según tu forma de jugar y tu presupuesto.
+  <div style="display:grid; grid-template-columns:1fr; md:grid-template-columns:1fr 1fr; gap:24px;" class="grid md:grid-cols-2">
+    <!-- Mchose V9 Pro -->
+    <div class="prod-card border-pink-500/10">
+      <div class="card-glow-line" style="background:linear-gradient(90deg, transparent, #ec4899, transparent);"></div>
+      <img src="https://placehold.co/500x280/0d1526/ec4899?text=Mchose+V9+Pro" alt="Mchose V9 Pro" class="prod-img">
+      <div class="prod-card-body">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span class="badge-special feat-badge">Mchose</span>
+          <span style="font-size:11px; color:#f472b6; font-weight:600;">Comodidad y Autonomía</span>
+        </div>
+        <h3 class="display-font text-pink-300" style="font-size:22px; font-weight:700; margin-bottom:12px;">V9 Pro Wireless</h3>
+        
+        <div class="spec-row"><span class="spec-key">Drivers</span><span class="spec-val">Diafragma de titanio de 50mm (Agudos nítidos)</span></div>
+        <div class="spec-row"><span class="spec-key">Latencia</span><span class="spec-val">Modo 2.4GHz a 15ms (Sin retardo de audio)</span></div>
+        <div class="spec-row"><span class="spec-key">Peso</span><span class="spec-val">245g (Muy ligero para diadema)</span></div>
+        <div class="spec-row"><span class="spec-key">Batería</span><span class="spec-val">Hasta 120h (Sin luces)</span></div>
+        <div class="spec-row"><span class="spec-key">Almohadillas</span><span class="spec-val">Tela híbrida transpirable (No calienta las orejas)</span></div>
+
+        <div class="why-buy">
+          <div class="why-buy-label">¿Por qué elegir el V9 Pro?</div>
+          Su perfil de audio está ligeramente más afinado para escuchar música a la vez que juegas. Sus almohadillas de tela transpirable son ideales para largas sesiones de juego y climas calurosos.
+        </div>
+      </div>
+    </div>
+
+    <!-- ATK N9 Ultra -->
+    <div class="prod-card border-blue-500/10">
+      <div class="card-glow-line"></div>
+      <img src="https://placehold.co/500x280/0d1526/00e5ff?text=ATK+N9+Ultra" alt="ATK N9 Ultra" class="prod-img">
+      <div class="prod-card-body">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span class="badge-hall feat-badge">ATK</span>
+          <span style="font-size:11px; color:#00e5ff; font-weight:600;">Precisión Competitiva</span>
+        </div>
+        <h3 class="display-font text-cyan-300" style="font-size:22px; font-weight:700; margin-bottom:12px;">N9 Ultra Wireless</h3>
+        
+        <div class="spec-row"><span class="spec-key">Drivers</span><span class="spec-val">Polímero de Cristal Líquido (LCP) de 50mm</span></div>
+        <div class="spec-row"><span class="spec-key">Latencia</span><span class="spec-val">Modo 2.4GHz Ultra-Link a < 12ms</span></div>
+        <div class="spec-row"><span class="spec-key">Peso</span><span class="spec-val">250g</span></div>
+        <div class="spec-row"><span class="spec-key">Doble Batería</span><span class="spec-val">Sistema Dual (Carga rápida en 15 mins)</span></div>
+        <div class="spec-row"><span class="spec-key">Aislamiento</span><span class="spec-val">Almohadillas de polipiel acústica premium</span></div>
+
+        <div class="why-buy">
+          <div class="why-buy-label">¿Por qué elegir el N9 Ultra?</div>
+          Tiene un aislamiento pasivo de ruido brutal gracias a sus almohadillas de polipiel. Esto realza los pasos del enemigo y los graves en shooters tácticos. Latencia ligeramente inferior al V9 Pro.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-value-card mt-6 border-slate-700/50 bg-slate-900/10 text-center">
+    <h4 class="display-font text-lg font-semibold mb-2">⚖️ Comparativa rápida para tu decisión</h4>
+    <p class="text-sm text-gray-300">
+      Si priorizas la transpiración de las orejas y música más agradable: elige los <strong>Mchose V9 Pro</strong>.<br>
+      Si juegas en entornos ruidosos y buscas máxima concentración en shooters competitivos: tu opción son los <strong>ATK N9 Ultra</strong>.
     </p>
   </div>
 
-  <!-- Values grid -->
-  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin-bottom:40px;">
-    <div class="about-value-card">
-      <div style="font-size:28px; margin-bottom:12px;">🎯</div>
-      <div class="display-font" style="font-size:15px; font-weight:700; margin-bottom:8px; color:var(--accent-cyan);">Datos reales</div>
-      <div style="font-size:13px; color:var(--text-muted); line-height:1.6;">Cada especificación proviene de fuentes verificadas y pruebas propias. Cero relleno.</div>
+</div>
+</div><!-- /audio -->
+
+
+<!-- ══════════════════════════ MAUSPADS (NUEVA SECCIÓN) ══════════════════════════ -->
+<div id="section-pads" class="sv-section">
+<div class="page-wrap">
+
+  <div style="text-align:center; margin-bottom:36px; position:relative; padding-bottom:28px;">
+    <div style="font-size:10px; letter-spacing:0.2em; font-weight:700; color:var(--accent-cyan); text-transform:uppercase; margin-bottom:12px; opacity:0.8;">SpecVersus · Superficies Competitivas</div>
+    <h2 class="display-font grad-text" style="font-size:clamp(24px,4vw,44px); font-weight:700; margin-bottom:10px;">Alfombrillas de Ratón</h2>
+    <p style="color:var(--text-muted); font-size:14px; max-width:460px; margin:0 auto; line-height:1.7;">El deslizamiento perfecto. Desde la gama entusiasta definitiva hasta opciones económicas chinas brutales.</p>
+    <div class="scan-line"></div>
+  </div>
+
+  <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:16px;">
+    <!-- Artisan FX Zero -->
+    <div class="prod-card">
+      <div class="card-glow-line"></div>
+      <img src="https://placehold.co/400x220/0d1526/a855f7?text=Artisan+FX+Zero" alt="Artisan FX Zero" class="prod-img">
+      <div class="prod-card-body">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span class="badge-high feat-badge">Artisan</span>
+          <span style="font-size:11px; color:#c084fc; font-weight:600;">Estándar de Oro Mundial</span>
+        </div>
+        <h3 class="display-font" style="font-size:18px; font-weight:700; margin-bottom:12px;">Artisan FX Zero (Soft/XSoft)</h3>
+        
+        <div class="spec-row"><span class="spec-key">Origen</span><span class="spec-val">Japón (Artesanal)</span></div>
+        <div class="spec-row"><span class="spec-key">Tipo</span><span class="spec-val">Control Híbrido (Estilo Otsu mejorado)</span></div>
+        <div class="spec-row"><span class="spec-key">Base</span><span class="spec-val">Espuma PORON premium antideslizante</span></div>
+        <div class="spec-row"><span class="spec-key">Borde</span><span class="spec-val">Cosido ultra-bajo, imperceptible</span></div>
+
+        <div class="why-buy">
+          <div class="why-buy-label">¿Por qué comprarla?</div>
+          La mejor superficie que existe. Es inmune a la humedad, no cambia de tacto según el sudor de la mano y dura literalmente años rindiendo como el primer día.
+        </div>
+      </div>
     </div>
-    <div class="about-value-card">
-      <div style="font-size:28px; margin-bottom:12px;">⚡</div>
-      <div class="display-font" style="font-size:15px; font-weight:700; margin-bottom:8px; color:#c084fc;">Sin hype</div>
-      <div style="font-size:13px; color:var(--text-muted); line-height:1.6;">No vendemos humo. Si un producto de bajo coste gana a uno caro, lo decimos sin rodeos.</div>
+
+    <!-- ATK Sky -->
+    <div class="prod-card">
+      <div class="card-glow-line"></div>
+      <img src="https://placehold.co/400x220/0d1526/00e5ff?text=ATK+Sky+Pad" alt="ATK Sky" class="prod-img">
+      <div class="prod-card-body">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span class="badge-mid feat-badge">ATK</span>
+          <span style="font-size:11px; color:#00e5ff; font-weight:600;">Híbrido de Rendimiento</span>
+        </div>
+        <h3 class="display-font" style="font-size:18px; font-weight:700; margin-bottom:12px;">ATK Sky Pad Series</h3>
+        
+        <div class="spec-row"><span class="spec-key">Tipo</span><span class="spec-val">Balanceado tirando a Speed</span></div>
+        <div class="spec-row"><span class="spec-key">Base</span><span class="spec-val">Poliuretano denso adherente</span></div>
+        <div class="spec-row"><span class="spec-key">Superficie</span><span class="spec-val">Tejido Cordura o poliéster trenzado</span></div>
+
+        <div class="why-buy">
+          <div class="why-buy-label">¿Por qué comprarla?</div>
+          Excelente alternativa a las marcas top por una fracción de su precio. Gran respuesta táctil para micro-ajustes y gran deslizamiento.
+        </div>
+      </div>
     </div>
-    <div class="about-value-card">
-      <div style="font-size:28px; margin-bottom:12px;">🛠️</div>
-      <div class="display-font" style="font-size:15px; font-weight:700; margin-bottom:8px; color:#67e8f9;">Actualización constante</div>
-      <div style="font-size:13px; color:var(--text-muted); line-height:1.6;">El mercado de periféricos cambia rápido. Actualizamos el catálogo para que siempre estés al día.</div>
+
+    <!-- Tang Mu (Otras Baratas) -->
+    <div class="prod-card">
+      <div class="card-glow-line"></div>
+      <img src="https://placehold.co/400x220/0d1526/34d399?text=Tang+Mu+Control" alt="Tang Mu Pad" class="prod-img">
+      <div class="prod-card-body">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span class="badge-low feat-badge">Tang Mu</span>
+          <span style="font-size:11px; color:#34d399; font-weight:600;">Calidad/Precio Brutal</span>
+        </div>
+        <h3 class="display-font" style="font-size:18px; font-weight:700; margin-bottom:12px;">Tang Mu Control / Speed</h3>
+        
+        <div class="spec-row"><span class="spec-key">Tipo</span><span class="spec-val">Control con gran frenada (Stopping Power)</span></div>
+        <div class="spec-row"><span class="spec-key">Base</span><span class="spec-val">Goma natural estriada</span></div>
+        <div class="spec-row"><span class="spec-key">Borde</span><span class="spec-val">Perfil cosido de perfil bajo</span></div>
+
+        <div class="why-buy">
+          <div class="why-buy-label">¿Por qué comprarla?</div>
+          La mejor alternativa barata de importación para shooters lentos (tipo Valorant). Ofrece una fricción dinámica excelente por unos 15€.
+        </div>
+      </div>
     </div>
-    <div class="about-value-card">
-      <div style="font-size:28px; margin-bottom:12px;">🤝</div>
-      <div class="display-font" style="font-size:15px; font-weight:700; margin-bottom:8px; color:#fbbf24;">Para todos los budgets</div>
-      <div style="font-size:13px; color:var(--text-muted); line-height:1.6;">Desde opciones low cost que destrozan a la competencia hasta hardware de gama entusiasta.</div>
+
+    <!-- Attack Shark Pad -->
+    <div class="prod-card">
+      <div class="card-glow-line" style="background:linear-gradient(90deg, transparent, #ef4444, transparent);"></div>
+      <img src="https://placehold.co/400x220/0d1526/ef4444?text=Attack+Shark+Pad" alt="Attack Shark Pad" class="prod-img">
+      <div class="prod-card-body">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span class="badge-special feat-badge text-red-400 border-red-500/20 bg-red-950/10">Attack Shark</span>
+          <span style="font-size:11px; color:#ef4444; font-weight:600;">Ultra Económico</span>
+        </div>
+        <h3 class="display-font" style="font-size:18px; font-weight:700; margin-bottom:12px;">Attack Shark Speed Pad</h3>
+        
+        <div class="spec-row"><span class="spec-key">Tipo</span><span class="spec-val">Speed Sintético</span></div>
+        <div class="spec-row"><span class="spec-key">Base</span><span class="spec-val">Goma fina</span></div>
+        <div class="spec-row"><span class="spec-key">Precio</span><span class="spec-val">~8€</span></div>
+
+        <div class="why-warn">
+          <div class="why-warn-label">Advertencia de Compra</div>
+          Se ve bonita en el setup y es ridículamente barata. Sin embargo, se deforma fácilmente con la humedad ambiental y el deslizamiento se vuelve "fangoso" en zonas de mucho uso en apenas unos meses.
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- CTA -->
-  <div style="text-align:center; padding:36px; background:linear-gradient(135deg,rgba(79,142,255,0.07),rgba(168,85,247,0.07)); border:1px solid rgba(79,142,255,0.15); border-radius:14px;">
-    <div class="display-font" style="font-size:20px; font-weight:700; margin-bottom:10px;">¿Listo para encontrar tu periférico?</div>
-    <p style="font-size:14px; color:var(--text-muted); margin-bottom:20px;">Explora nuestras comparativas y encuentra el setup perfecto para ti.</p>
-    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
-      <button onclick="showSection('mice')" style="padding:10px 24px; border-radius:7px; font-size:13px; font-weight:700; cursor:pointer; background:linear-gradient(135deg,rgba(79,142,255,0.2),rgba(0,229,255,0.1)); border:1px solid rgba(79,142,255,0.4); color:var(--accent-cyan);">🖱️ Ver Ratones</button>
-      <button onclick="showSection('keys')" style="padding:10px 24px; border-radius:7px; font-size:13px; font-weight:700; cursor:pointer; background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(79,142,255,0.1)); border:1px solid rgba(168,85,247,0.4); color:#c084fc;">⌨️ Ver Teclados</button>
+</div>
+</div><!-- /pads -->
+
+
+<!-- ══════════════════════════ ABOUT ══════════════════════════ -->
+<div id="section-about" class="sv-section">
+<div class="page-wrap">
+
+  <div style="text-align:center; margin-bottom:44px; position:relative; padding-bottom:28px;">
+    <div style="font-size:10px; letter-spacing:0.2em; font-weight:700; color:var(--accent-cyan); text-transform:uppercase; margin-bottom:12px; opacity:0.8;">La Realidad de la Importación</div>
+    <h2 class="display-font grad-text" style="font-size:clamp(24px,4vw,44px); font-weight:700; margin-bottom:10px;">Sobre SpecVersus</h2>
+    <p style="color:var(--text-muted); font-size:14px; max-width:460px; margin:0 auto; line-height:1.7;">Nuestra filosofía explicada sin rodeos técnicos innecesarios.</p>
+    <div class="scan-line"></div>
+  </div>
+
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px;">
+    <div class="about-value-card">
+      <div style="font-size:24px; margin-bottom:14px;">🕵️‍♂️</div>
+      <h3 class="display-font" style="font-size:16px; font-weight:700; margin-bottom:10px;">Análisis sin Compromiso</h3>
+      <p style="font-size:13.5px; color:var(--text-muted); line-height:1.6;">
+        No dependemos de marcas que nos patrocinan. Si un ratón de 30€ de una marca china barre a uno de 160€ de una marca comercial tradicional, te lo decimos. Y si una marca low-cost miente en sus controles de calidad como Attack Shark, también te lo avisamos de frente.
+      </p>
+    </div>
+    <div class="about-value-card">
+      <div style="font-size:24px; margin-bottom:14px;">⚡</div>
+      <h3 class="display-font" style="font-size:16px; font-weight:700; margin-bottom:10px;">Rendimiento Real</h3>
+      <p style="font-size:13.5px; color:var(--text-muted); line-height:1.6;">
+        Analizamos los componentes clave: Sensores reales (PixArt), microcontroladores (Nordic), switches (Huano/Kailh/Omron) y latencias reales probadas en laboratorio. No caemos en el marketing de "luces RGB gaming".
+      </p>
+    </div>
+    <div class="about-value-card">
+      <div style="font-size:24px; margin-bottom:14px;">🛍️</div>
+      <h3 class="display-font" style="font-size:16px; font-weight:700; margin-bottom:10px;">Compra Inteligente</h3>
+      <p style="font-size:13.5px; color:var(--text-muted); line-height:1.6;">
+        Te ayudamos a navegar por la marea de marcas de importación china para que sepas dónde cada euro rinde al 100% (como VXE y ATK) y de dónde deberías alejarte para evitar tirar el dinero.
+      </p>
     </div>
   </div>
 
@@ -642,325 +994,100 @@
 
 <!-- ══════════════════════════ CONTACT ══════════════════════════ -->
 <div id="section-contact" class="sv-section">
-<div class="page-wrap" style="max-width:700px;">
+<div class="page-wrap" style="max-width:600px;">
 
-  <div style="text-align:center; margin-bottom:48px; position:relative; padding-bottom:28px;">
-    <div style="font-size:10px; letter-spacing:0.2em; font-weight:700; color:var(--accent-cyan); text-transform:uppercase; margin-bottom:14px; opacity:0.8;">Hablemos</div>
-    <h2 class="display-font grad-text" style="font-size:clamp(28px,5vw,50px); font-weight:700; margin-bottom:12px;">Contacto</h2>
-    <p style="color:var(--text-muted); font-size:14px; line-height:1.8;">¿Tienes alguna sugerencia, quieres colaborar o simplemente saludar? Escríbenos.</p>
+  <div style="text-align:center; margin-bottom:36px; position:relative; padding-bottom:28px;">
+    <div style="font-size:10px; letter-spacing:0.2em; font-weight:700; color:var(--accent-cyan); text-transform:uppercase; margin-bottom:12px; opacity:0.8;">Contacto Directo</div>
+    <h2 class="display-font grad-text" style="font-size:clamp(24px,4vw,36px); font-weight:700; margin-bottom:10px;">Contacto</h2>
+    <p style="color:var(--text-muted); font-size:14px; line-height:1.7;">¿Tienes dudas sobre un periférico específico de importación? Escríbenos.</p>
     <div class="scan-line"></div>
   </div>
 
-  <div style="display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-bottom:32px;" class="contact-info-grid">
-    <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:20px;">
-      <div style="font-size:20px; margin-bottom:8px;">✉️</div>
-      <div style="font-size:11px; font-weight:700; letter-spacing:0.1em; color:var(--text-dim); text-transform:uppercase; margin-bottom:4px;">Email</div>
-      <div style="font-size:14px; color:var(--accent-cyan);">hola@specversus.com</div>
-    </div>
-    <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:20px;">
-      <div style="font-size:20px; margin-bottom:8px;">💬</div>
-      <div style="font-size:11px; font-weight:700; letter-spacing:0.1em; color:var(--text-dim); text-transform:uppercase; margin-bottom:4px;">Discord</div>
-      <div style="font-size:14px; color:#c084fc;">discord.gg/specversus</div>
-    </div>
-  </div>
-
-  <!-- Form -->
-  <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:36px; position:relative; overflow:hidden;">
-    <div style="position:absolute;top:0;right:0;width:250px;height:250px;background:radial-gradient(circle,rgba(168,85,247,0.05),transparent 70%);pointer-events:none;"></div>
-
-    <div style="margin-bottom:22px;">
+  <form onsubmit="event.preventDefault(); alert('Mensaje enviado. Analizaremos tu hardware lo antes posible.');" style="display:flex; flex-direction:column; gap:20px;">
+    <div>
       <label class="form-label">Nombre</label>
-      <input type="text" class="form-field" placeholder="Tu nombre aquí">
+      <input type="text" class="form-field" placeholder="Tu nombre o alias" required>
     </div>
-    <div style="margin-bottom:22px;">
+    <div>
       <label class="form-label">Email</label>
-      <input type="email" class="form-field" placeholder="tu@email.com">
+      <input type="email" class="form-field" placeholder="tu@email.com" required>
     </div>
-    <div style="margin-bottom:28px;">
-      <label class="form-label">Mensaje</label>
-      <textarea class="form-field" rows="5" placeholder="Cuéntanos en qué podemos ayudarte..."></textarea>
+    <div>
+      <label class="form-label">Consulta técnica</label>
+      <textarea class="form-field" rows="5" placeholder="¿Qué periférico estás comparando?" required style="resize:none;"></textarea>
     </div>
-    <div style="display:flex; justify-content:flex-end;">
-      <button class="submit-btn" onclick="handleSubmit(this)">Enviar mensaje →</button>
+    <div style="text-align:right;">
+      <button type="submit" class="submit-btn">Enviar Consulta</button>
     </div>
-    <div id="form-success" style="display:none; margin-top:16px; padding:12px 16px; border-radius:8px; background:rgba(52,211,153,0.1); border:1px solid rgba(52,211,153,0.25); color:#34d399; font-size:13px; font-weight:600;">
-      ✓ Mensaje enviado correctamente. ¡Te responderemos pronto!
-    </div>
-  </div>
+  </form>
 
 </div>
 </div><!-- /contact -->
-
-<style>
-  @media (max-width:520px) {
-    .contact-info-grid { grid-template-columns: 1fr !important; }
-  }
-</style>
 
 
 <!-- ══════════════════════════ FOOTER ══════════════════════════ -->
 <footer id="footer">
   <div class="footer-inner">
-    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:36px; margin-bottom:40px;">
-
-      <!-- Brand -->
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:32px; margin-bottom:40px;">
       <div>
-        <div class="display-font grad-text" style="font-size:22px; font-weight:700; margin-bottom:12px; cursor:pointer;" onclick="showSection('home')">SpecVersus</div>
-        <p style="font-size:13px; color:var(--text-dim); line-height:1.7; margin-bottom:16px;">Comparativas honestas de periféricos gaming. Sin hype, solo datos.</p>
-        <div style="display:flex; gap:8px;">
-          <a href="#" class="social-btn" title="Twitter/X">𝕏</a>
-          <a href="#" class="social-btn" title="YouTube">▶</a>
-          <a href="#" class="social-btn" title="Discord">◈</a>
-          <a href="#" class="social-btn" title="Instagram">◎</a>
-        </div>
+        <span class="nav-logo grad-text" style="margin-bottom:12px; display:inline-block;" onclick="showSection('home')">Spec<span style="-webkit-text-fill-color:var(--text-main);">Versus</span></span>
+        <p style="font-size:13px; color:var(--text-dim); line-height:1.6;">
+          Especialistas en destapar la verdad de las marcas chinas de rendimiento extremo.
+        </p>
       </div>
-
-      <!-- Links -->
       <div>
-        <div style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-dim); margin-bottom:14px;">Catálogos</div>
-        <span class="footer-link" onclick="showSection('mice')">🖱️ Ratones Gaming</span>
-        <span class="footer-link" onclick="showSection('keys')">⌨️ Teclados Mecánicos</span>
-        <span class="footer-link" onclick="showSection('home')" style="margin-top:8px;">★ Selección del Editor</span>
+        <h4 class="display-font" style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-muted); margin-bottom:16px;">Catálogos</h4>
+        <span class="footer-link" onclick="showSection('mice')">Ratones Gaming</span>
+        <span class="footer-link" onclick="showSection('keys')">Teclados Mecánicos</span>
+        <span class="footer-link" onclick="showSection('audio')">Auriculares</span>
+        <span class="footer-link" onclick="showSection('pads')">Mauspads</span>
       </div>
-
       <div>
-        <div style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-dim); margin-bottom:14px;">SpecVersus</div>
+        <h4 class="display-font" style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-muted); margin-bottom:16px;">Comunidad</h4>
         <span class="footer-link" onclick="showSection('about')">Sobre Nosotros</span>
-        <span class="footer-link" onclick="showSection('contact')">Contacto</span>
-        <a href="#" class="footer-link">Política de afiliados</a>
-        <a href="#" class="footer-link">Aviso legal</a>
+        <span class="footer-link" onclick="showSection('contact')">Formulario de Contacto</span>
       </div>
-
-      <!-- Newsletter teaser -->
-      <div>
-        <div style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-dim); margin-bottom:14px;">Newsletter</div>
-        <p style="font-size:13px; color:var(--text-dim); line-height:1.6; margin-bottom:14px;">Las mejores ofertas y análisis, directos a tu inbox.</p>
-        <div style="display:flex; gap:8px;">
-          <input type="email" placeholder="tu@email.com" style="flex:1; padding:8px 12px; border-radius:6px; background:rgba(13,21,38,0.8); border:1px solid var(--border); color:var(--text-main); font-size:12px; outline:none; min-width:0;">
-          <button style="padding:8px 14px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; background:linear-gradient(135deg,var(--accent-blue),var(--accent-cyan)); border:none; color:#040810; white-space:nowrap;">→</button>
-        </div>
-      </div>
-
     </div>
-
-    <div style="border-top:1px solid var(--border); padding-top:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
-      <div style="font-size:12px; color:var(--text-dim);">© 2025 SpecVersus. Hecho con ❤️ para la comunidad gamer.</div>
-      <div style="font-size:11px; color:var(--text-dim);">Algunos enlaces son de afiliado. <a href="#" style="color:var(--text-dim); text-decoration:underline; text-underline-offset:3px;">Saber más.</a></div>
+    <div style="border-top:1px solid rgba(255,255,255,0.04); padding-top:24px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px;">
+      <p style="font-size:12px; color:var(--text-dim);">
+        &copy; 2026 SpecVersus. Hecho para entusiastas del hardware transparente.
+      </p>
     </div>
   </div>
 </footer>
 
-
-<!-- ══════════════════════════ JAVASCRIPT ══════════════════════════ -->
+<!-- ══════════════════════════ SCRIPTS ══════════════════════════ -->
 <script>
-// ─── DATA ────────────────────────────────────────────────────────
-const MICE = [
-  { id:'m1',  name:'VXE Dragonfly R1',    budget:'low',  weight:51, shape:'simetrico',  grip:['claw','fingertip'], sensor:'PixArt PAW3395',      connectivity:'Inalámbrico 2.4GHz + Cable',         shapeLabel:'Simétrico, mediano',              gripLabel:'Claw / Fingertip',          why:'El rey indiscutible de la calidad-precio del mercado actual.',            img:'https://placehold.co/600x340/0d1a2e/4f8eff?text=VXE+Dragonfly+R1',    link:'#' },
-  { id:'m2',  name:'Aula V9 Ultra',       budget:'low',  weight:54, shape:'ergonomico', grip:['claw'],             sensor:'PixArt PAW3395',      connectivity:'Inalámbrico + BT + Cable',            shapeLabel:'Ergonómico, mano pequeña',        gripLabel:'Aggressive Claw',           why:'Clon a escala del Superlight 2C, perfecto para manos compactas.',         img:'https://placehold.co/600x340/0d1a2e/34d399?text=Aula+V9+Ultra',       link:'#' },
-  { id:'m3',  name:'Darmoshark M5 Air',   budget:'low',  weight:36, shape:'simetrico',  grip:['fingertip'],        sensor:'PixArt PAW3395',      connectivity:'Inalámbrico + Cable',                shapeLabel:'Minimalista, muy pequeño',        gripLabel:'Fingertip estricto',        why:'Movimiento libre absoluto gracias a su peso pluma de 36g.',               img:'https://placehold.co/600x340/0d1a2e/00e5ff?text=Darmoshark+M5+Air',   link:'#' },
-  { id:'m4',  name:'Scyrox V8',           budget:'mid',  weight:36, shape:'simetrico',  grip:['claw'],             sensor:'PixArt PAW3950',      connectivity:'Inalámbrico 8K + Cable',             shapeLabel:'Simétrico, joroba trasera',       gripLabel:'Aggressive Claw',           why:'36g con sensor entusiasta PAW3950 y polling 8K a precio medio.',         img:'https://placehold.co/600x340/0d1a2e/7eb8ff?text=Scyrox+V8',           link:'#' },
-  { id:'m5',  name:'ATK F1 V2',           budget:'mid',  weight:38, shape:'simetrico',  grip:['claw','fingertip'], sensor:'PixArt PAW3950 Ultra', connectivity:'Inalámbrico 8K + Cable',            shapeLabel:'Simétrico, perfil plano',         gripLabel:'Aggressive Claw / Fingertip', why:'Diseñado para FPS competitivos: ligereza y respuesta instantánea.',      img:'https://placehold.co/600x340/0d1a2e/7eb8ff?text=ATK+F1+V2',           link:'#' },
-  { id:'m6',  name:'Mchose A7 Ultra V2',  budget:'mid',  weight:59, shape:'simetrico',  grip:['palm','claw'],      sensor:'PixArt PAW3950',      connectivity:'Triple Modo (2.4G + BT + Cable)',     shapeLabel:'Simétrico, mediano-grande',       gripLabel:'Palm / Relaxed Claw',       why:'Copia idéntica del Superlight con mejor sensor a mitad de precio.',       img:'https://placehold.co/600x340/0d1a2e/7eb8ff?text=Mchose+A7+Ultra+V2',  link:'#' },
-  { id:'m7',  name:'Mchose K7 Ultra',     budget:'mid',  weight:55, shape:'simetrico',  grip:['fingertip','claw'], sensor:'PixArt PAW3950',      connectivity:'Inalámbrico + Cable',                shapeLabel:'Simétrico, perfil bajo (Viper V3 Pro)', gripLabel:'Fingertip / Relaxed Claw', why:'Clona la forma del Viper V3 Pro con ergonomía de primera.',           img:'https://placehold.co/600x340/0d1a2e/7eb8ff?text=Mchose+K7+Ultra',     link:'#' },
-  { id:'m8',  name:'Incott 029 Pro',      budget:'mid',  weight:58, shape:'simetrico',  grip:['claw','palm'],      sensor:'PixArt PAW3395',      connectivity:'Triple Modo',                        shapeLabel:'Simétrico modular',               gripLabel:'Relaxed Claw / Palm',       why:'Versatilidad, batería épica y clicks hiper-definidos para todo uso.',     img:'https://placehold.co/600x340/0d1a2e/7eb8ff?text=Incott+029+Pro',      link:'#' },
-  { id:'m9',  name:'ATK Z1 Pro Max',      budget:'mid',  weight:50, shape:'ergonomico', grip:['palm'],             sensor:'PixArt PAW3950',      connectivity:'Inalámbrico 8K',                     shapeLabel:'Ergonómico mano derecha',         gripLabel:'Palm Grip',                 why:'Máxima ergonomía con el ecosistema óptico más robusto del mercado.',      img:'https://placehold.co/600x340/0d1a2e/7eb8ff?text=ATK+Z1+Pro+Max',      link:'#' },
-  { id:'m10', name:'WLMouse Beast X Pro', budget:'high', weight:39, shape:'simetrico',  grip:['fingertip','claw'], sensor:'PixArt PAW3395',      connectivity:'Inalámbrico 8K + Cable',             shapeLabel:'Simétrico, diseño con agujeros',  gripLabel:'Fingertip / Relaxed Claw',  why:'Magnesio aeronáutico: estética espectacular y ligereza premium.',         img:'https://placehold.co/600x340/120b28/a855f7?text=WLMouse+Beast+X+Pro', link:'#' },
-  { id:'m11', name:'WLMouse Sword',       budget:'high', weight:39, shape:'ergonomico', grip:['palm','claw'],      sensor:'PixArt PAW3950',      connectivity:'Inalámbrico 8K + Cable',             shapeLabel:'Ergonómico mano derecha',         gripLabel:'Palm / Ergo Claw',          why:'Ergonomía y magnesio juntos: descansa la mano sin sacrificar rendimiento.', img:'https://placehold.co/600x340/120b28/c084fc?text=WLMouse+Sword',      link:'#' }
-];
+  function showSection(sectionId) {
+    // Esconder todas
+    const sections = document.querySelectorAll('.sv-section');
+    sections.forEach(s => s.classList.remove('active'));
 
-const KEYS = [
-  { id:'k1', name:'IROK MG68 ACE / PLUS',          cat:'hall',    size:'compact', conn:'wireless', format:'65% Ultra compacto',                        switches:'Magnéticos Hall Effect regulables',           connectivity:'2.4GHz + BT + Cable',                 why:'Rapid Trigger al máximo rendimiento competitivo en el formato más pequeño.',        img:'https://placehold.co/600x340/041a1e/00e5ff?text=IROK+MG68+ACE',          link:'#' },
-  { id:'k2', name:'IROK Mars75 Pro / MG75',         cat:'hall',    size:'75',      conn:'wireless', format:'75% (Fila F + flechas aisladas)',            switches:'Magnéticos Hall Effect de alta precisión',    connectivity:'Inalámbrico baja latencia + Cable',    why:'El equilibrio perfecto entre tamaño gaming y teclas de función esenciales.',       img:'https://placehold.co/600x340/041a1e/67e8f9?text=IROK+Mars75+Pro',        link:'#' },
-  { id:'k3', name:'Aula AG60 Pro',                  cat:'hall',    size:'compact', conn:'cable',    format:'60% Extremo (sin fila F ni flechas)',        switches:'Hall Effect Magnéticos',                      connectivity:'Cable USB-C (latencia cero)',           why:'Para FPS que necesitan inclinar el teclado y liberar espacio total al ratón.',    img:'https://placehold.co/600x340/041a1e/a5f3fc?text=Aula+AG60+Pro',          link:'#' },
-  { id:'k4', name:'Mchose Mix87',                   cat:'hall',    size:'tkl',     conn:'triple',   format:'TKL / 87% (sin teclado numérico)',           switches:'Magnéticos de última generación',             connectivity:'Triple Modo (2.4GHz + BT + Cable)',    why:'Estética limpia y rendimiento magnético en el formato más cómodo para escribir.',  img:'https://placehold.co/600x340/041a1e/67e8f9?text=Mchose+Mix87',           link:'#' },
-  { id:'k5', name:'Royal Kludge RK R65 / R75 / M87',cat:'mec',    size:'75',      conn:'triple',   format:'65% / 75% / TKL (según versión)',            switches:'Mecánicos pre-lubricados de alta calidad',    connectivity:'Triple Modo o Cable (según versión)',  why:'Distribución ISO perfecta y acústica cremosa de fábrica sin modificaciones.',     img:'https://placehold.co/600x340/1a1000/fbbf24?text=RK+R65+R75+M87',         link:'#' },
-  { id:'k6', name:'Monsgeek M1 V5',                 cat:'mec',     size:'75',      conn:'cable',    format:'75% Premium',                               switches:'Mecánicos Hot-swappable',                     connectivity:'Cable USB-C premium',                  why:'Chasis de aluminio y construcción entusiasta para la máxima durabilidad.',         img:'https://placehold.co/600x340/1a1000/d97706?text=Monsgeek+M1+V5',         link:'#' },
-  { id:'k7', name:'Royal Kludge RK S85',            cat:'special', size:'75',      conn:'triple',   format:'75% con Pantalla LCD + Rueda de volumen',   switches:'Beige (Táctil) / Cloud (Lineal silencioso)', connectivity:'2.4GHz + BT + Cable',                 why:'Pantalla LCD personalizable con GIFs o batería. Estética premium única.',          img:'https://placehold.co/600x340/1a0414/ec4899?text=Royal+Kludge+S85',        link:'#' },
-  { id:'k8', name:'Royal Kludge RK S98',            cat:'special', size:'tkl',     conn:'triple',   format:'96% compacto (incluye pad numérico)',        switches:'Chartreuse (Lineal) / Brown (Táctil)',       connectivity:'Triple Modo de alta compatibilidad',   why:'Teclado completo con numpad comprimido para no chocar con el ratón al jugar.',    img:'https://placehold.co/600x340/1a0414/f472b6?text=Royal+Kludge+S98',        link:'#' }
-];
+    // Activar sección
+    const target = document.getElementById('section-' + sectionId);
+    if(target) target.classList.add('active');
 
-const BADGE_LABEL = { low:'Low Budget', mid:'Mid Range', high:'High End', hall:'Hall Effect', mec:'Mecánico ISO', special:'Ed. Especial' };
+    // Actualizar nav activa
+    const links = document.querySelectorAll('.nav-link, .mob-link');
+    links.forEach(l => {
+      if(l.getAttribute('data-section') === sectionId) {
+        l.classList.add('active');
+      } else {
+        l.classList.remove('active');
+      }
+    });
 
-// ─── NAVIGATION ─────────────────────────────────────────────────
-function showSection(name) {
-  document.querySelectorAll('.sv-section').forEach(s => s.classList.remove('active'));
-  document.getElementById('section-' + name).classList.add('active');
-  document.querySelectorAll('.nav-link, .mob-link').forEach(b => {
-    b.classList.toggle('active', b.dataset.section === name);
-  });
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
 
-function toggleMobile() {
-  document.getElementById('mobile-menu').classList.toggle('open');
-}
-function closeMobile() {
-  document.getElementById('mobile-menu').classList.remove('open');
-}
-
-// ─── MICE ───────────────────────────────────────────────────────
-let miceF = { budget:'all', weight:null, grip:null, shape:null };
-
-function weightCat(w) { return w < 40 ? 'lt40' : w <= 55 ? '40-55' : 'gt55'; }
-function wBar(w) { return Math.round(((w-34)/(65-34))*100); }
-
-function buildMouseCard(m) {
-  const hi = m.budget === 'high';
-  return `<div class="prod-card" id="${m.id}">
-    <div class="card-glow-line"></div>
-    <!-- SUBE TU IMAGEN AQUÍ — reemplaza el src con la URL de tu imagen de WordPress -->
-    <img src="${m.img}" alt="${m.name}" class="prod-img" loading="lazy">
-    <div class="prod-card-body">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:13px;gap:8px;">
-        <h3 class="display-font" style="font-size:15px;font-weight:700;color:${hi?'#e2b4ff':'var(--text-main)'};line-height:1.3;">${m.name}</h3>
-        <span class="badge-${m.budget}" style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0;">${BADGE_LABEL[m.budget]}</span>
-      </div>
-      <div class="spec-row"><span class="spec-key">⚖️ Peso</span><div style="flex:1;"><span style="font-weight:700;color:${m.weight<40?'var(--accent-cyan)':'var(--text-main)'};">${m.weight}g</span><div class="weight-bar"><div class="weight-fill" style="width:${wBar(m.weight)}%;"></div></div></div></div>
-      <div class="spec-row"><span class="spec-key">📐 Forma</span><span class="spec-val">${m.shapeLabel}</span></div>
-      <div class="spec-row"><span class="spec-key">✋ Grip</span><span class="spec-val">${m.gripLabel}</span></div>
-      <div class="spec-row"><span class="spec-key">🎯 Sensor</span><span class="spec-val" style="color:${m.sensor.includes('3950')?'#c084fc':'#c8d8f8'};">${m.sensor}</span></div>
-      <div class="spec-row"><span class="spec-key">📡 Conexión</span><span class="spec-val">${m.connectivity}</span></div>
-      <div class="why-buy"><div class="why-buy-label">✦ Por qué comprarlo</div>${m.why}</div>
-      <a href="${m.link}" target="_blank" rel="noopener nofollow" class="buy-link${hi?' buy-link-high':''}">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        Ver precio →
-      </a>
-    </div>
-  </div>`;
-}
-
-function renderMice() {
-  document.getElementById('mice-grid').innerHTML = MICE.map(buildMouseCard).join('');
-  applyMice();
-}
-function applyMice() {
-  let v = 0;
-  MICE.forEach(m => {
-    const el = document.getElementById(m.id); let s = true;
-    if (miceF.budget !== 'all' && m.budget !== miceF.budget) s = false;
-    if (miceF.weight && weightCat(m.weight) !== miceF.weight) s = false;
-    if (miceF.grip && !m.grip.includes(miceF.grip)) s = false;
-    if (miceF.shape && m.shape !== miceF.shape) s = false;
-    el.classList.toggle('hidden', !s); if (s) v++;
-  });
-  document.getElementById('mice-count').textContent = v;
-  document.getElementById('empty-mice').style.display = v ? 'none' : 'block';
-  document.getElementById('mice-grid').style.display = v ? 'grid' : 'none';
-  updMiceCount();
-}
-function setMiceFilter(t, v, btn) {
-  miceF[t] = v;
-  document.querySelectorAll('#section-mice .filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active'); applyMice();
-}
-let miceAdvOpen = false;
-function toggleMiceAdv() {
-  miceAdvOpen = !miceAdvOpen;
-  document.getElementById('mice-adv-panel').classList.toggle('open', miceAdvOpen);
-  document.getElementById('mice-more-btn').classList.toggle('open', miceAdvOpen);
-}
-function toggleMiceChip(btn) {
-  const t = btn.dataset.type, v = btn.dataset.val, was = btn.classList.contains('sel');
-  document.querySelectorAll(`#mice-adv-panel .adv-chip[data-type="${t}"]`).forEach(c => c.classList.remove('sel'));
-  if (!was) { btn.classList.add('sel'); miceF[t] = v; } else { miceF[t] = null; }
-  applyMice();
-}
-function clearMiceAdv() {
-  document.querySelectorAll('#mice-adv-panel .adv-chip').forEach(c => c.classList.remove('sel'));
-  miceF.weight = miceF.grip = miceF.shape = null; applyMice();
-}
-function updMiceCount() {
-  const n = [miceF.weight, miceF.grip, miceF.shape].filter(Boolean).length;
-  const b = document.getElementById('mice-adv-count');
-  b.style.display = n ? 'inline' : 'none'; b.textContent = n;
-}
-
-// ─── KEYS ───────────────────────────────────────────────────────
-let keysF = { cat:'all', size:null, conn:null };
-
-function buildKeyCard(k) {
-  const sp = k.cat === 'special', hl = k.cat === 'hall';
-  const catClass = { hall:'badge-hall', mec:'badge-mec', special:'badge-special' }[k.cat];
-  return `<div class="prod-card" id="${k.id}">
-    <div class="card-glow-line" style="background:linear-gradient(90deg,transparent,var(--accent-purple),transparent);"></div>
-    <!-- SUBE TU IMAGEN AQUÍ — reemplaza el src con la URL de tu imagen de WordPress -->
-    <img src="${k.img}" alt="${k.name}" class="prod-img" loading="lazy">
-    <div class="prod-card-body">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:13px;gap:8px;">
-        <h3 class="display-font" style="font-size:15px;font-weight:700;color:${sp?'#fda4af':hl?'#a5f3fc':'var(--text-main)'};line-height:1.3;">${k.name}</h3>
-        <span class="${catClass}" style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0;">${BADGE_LABEL[k.cat]}</span>
-      </div>
-      <div class="spec-row"><span class="spec-key">📐 Formato</span><span class="spec-val">${k.format}</span></div>
-      <div class="spec-row"><span class="spec-key">⌨️ Switches</span><span class="spec-val" style="color:${hl?'#67e8f9':'#c8d8f8'};">${k.switches}</span></div>
-      <div class="spec-row"><span class="spec-key">📡 Conexión</span><span class="spec-val">${k.connectivity}</span></div>
-      <div class="why-buy" style="background:linear-gradient(135deg,rgba(168,85,247,0.08),rgba(79,142,255,0.04));border-color:rgba(168,85,247,0.18);"><div class="why-buy-label" style="color:#c084fc;">✦ Por qué comprarlo</div>${k.why}</div>
-      <a href="${k.link}" target="_blank" rel="noopener nofollow" class="buy-link buy-link-key">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        Ver precio →
-      </a>
-    </div>
-  </div>`;
-}
-
-function renderKeys() {
-  document.getElementById('keys-grid').innerHTML = KEYS.map(buildKeyCard).join('');
-  applyKeys();
-}
-function applyKeys() {
-  let v = 0;
-  KEYS.forEach(k => {
-    const el = document.getElementById(k.id); let s = true;
-    if (keysF.cat !== 'all' && k.cat !== keysF.cat) s = false;
-    if (keysF.size && k.size !== keysF.size) s = false;
-    if (keysF.conn && k.conn !== keysF.conn) s = false;
-    el.classList.toggle('hidden', !s); if (s) v++;
-  });
-  document.getElementById('keys-count').textContent = v;
-  document.getElementById('empty-keys').style.display = v ? 'none' : 'block';
-  document.getElementById('keys-grid').style.display = v ? 'grid' : 'none';
-  updKeysCount();
-}
-function setKeysFilter(t, v, btn) {
-  keysF[t] = v;
-  document.querySelectorAll('#section-keys .filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active'); applyKeys();
-}
-let keysAdvOpen = false;
-function toggleKeysAdv() {
-  keysAdvOpen = !keysAdvOpen;
-  document.getElementById('keys-adv-panel').classList.toggle('open', keysAdvOpen);
-  document.getElementById('keys-more-btn').classList.toggle('open', keysAdvOpen);
-}
-function toggleKeysChip(btn) {
-  const t = btn.dataset.type, v = btn.dataset.val, was = btn.classList.contains('sel');
-  document.querySelectorAll(`#keys-adv-panel .adv-chip[data-type="${t}"]`).forEach(c => c.classList.remove('sel'));
-  if (!was) { btn.classList.add('sel'); keysF[t] = v; } else { keysF[t] = null; }
-  applyKeys();
-}
-function clearKeysAdv() {
-  document.querySelectorAll('#keys-adv-panel .adv-chip').forEach(c => c.classList.remove('sel'));
-  keysF.size = keysF.conn = null; applyKeys();
-}
-function updKeysCount() {
-  const n = [keysF.size, keysF.conn].filter(Boolean).length;
-  const b = document.getElementById('keys-adv-count');
-  b.style.display = n ? 'inline' : 'none'; b.textContent = n;
-}
-
-// ─── CONTACT ────────────────────────────────────────────────────
-function handleSubmit(btn) {
-  btn.textContent = 'Enviando...'; btn.disabled = true;
-  setTimeout(() => {
-    btn.style.display = 'none';
-    document.getElementById('form-success').style.display = 'block';
-  }, 1000);
-}
-
-// ─── INIT ────────────────────────────────────────────────────────
-renderMice();
-renderKeys();
+  /* Hamburguesa Móvil */
+  function toggleMobile() {
+    document.getElementById('mobile-menu').classList.toggle('open');
+  }
+  function closeMobile() {
+    document.getElementById('mobile-menu').classList.remove('open');
+  }
 </script>
 </body>
 </html>
 HTMLEOF
-echo "done"
